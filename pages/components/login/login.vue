@@ -71,12 +71,14 @@
 				
 				//传参接口
 				uni.request({
-					method:"GET",
-				    url: 'http://localhost:8888/xboot/common/captcha/init',
-				  //   data: {
-				  //       username:this.username,
-						// password:this.password
-				  //   },
+					method:"POST",
+				    url: 'http://localhost:8888/xboot/auth/login',
+					//http://localhost:8888/xboot/common/captcha/draw/  common/captcha/init
+				    data: {
+				        username:this.username,
+						password:this.password,
+						
+				    },
 				    header: {
 				        'custom-header': "application/x-www-form-urlencoded" //自定义请求头信息
 				    },
