@@ -82,7 +82,7 @@
 			//获取分区
 			radioChange: function(evt) {
 					this.part=evt.detail.value
-					console.log(this.part)
+					console.log("选中分区：",this.part)
 				},
 			//提交数据
 			submit(ref) {

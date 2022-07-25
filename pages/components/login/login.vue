@@ -73,7 +73,6 @@
 				uni.request({
 					method:"POST",
 				    url: 'http://localhost:8888/xboot/auth/login',
-					//http://localhost:8888/xboot/common/captcha/draw/  common/captcha/init
 				    data: {
 				        username:this.username,
 						password:this.password,
