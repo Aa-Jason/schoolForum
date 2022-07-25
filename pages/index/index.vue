@@ -3,6 +3,7 @@
 		<view>
 			<MainPage />
 		</view>
+		<u-notify ref="uNotify" :show="show"></u-notify>
 		<view class="postArea">
 			
 		</view>
@@ -13,22 +14,35 @@
 
 <script>
 	import MainPage from "@/pages/components/MainPage"
+	import PostCard from "@/pages/components/PostArea/PostCard.vue"
 	
 	export default {
 		components:{
 			MainPage,
+			PostCard
 		},
 		data() {
 			return {
-				
+				show:true,
 			}
 		},
 		onLoad() {
 
 		},
 		onPullDownRefresh() {
-			console.log("下拉刷新")
+			console.log("爬取新帖子")
+			uni.request({//加载新帖子
+				
+			})
 			uni.stopPullDownRefresh()
+			this.$refs.uNotify.show({
+			            top: 120,
+			            type: 'primary',
+			            message: '刷新成功',
+			            duration: 1000,
+			            fontSize: 10,
+			            safeAreaInsetTop:true
+			        })
 		},
 		methods: {
 

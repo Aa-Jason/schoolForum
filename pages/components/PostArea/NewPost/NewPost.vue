@@ -1,51 +1,41 @@
 <template>
 	<view class="main">
 		<view>
-			<form @submit="formSubmit" @reset="formReset">
+			<uni-form ref="valiForm" :rules=rules :modeValue="valiFormData">
 				<view class="uni-form-item uni-column" id="postTitle">
-					<view class="title">帖子主题</view>
+					<view class="title" required>帖子主题</view>
 					<view class="uni-textarea">
-						<textarea @blur="bindTextAreaBlur" v-model="postTitle" placeholder="不超过30字" maxlength="30"
-							auto-height="true" />
+						<textarea v-model="valiFormData.postTitle" placeholder="不超过30字"
+							maxlength="30" auto-height="true" />
 					</view>
 				</view>
 				<view class="uni-form-item uni-column">
 					<view class="title">分区</view>
 					<view class="part">
-						<radio-group name="radio">
-							<label>
-								<radio value="part1" /><text>恋爱交友</text>
-							</label>
-							<label>
-								<radio value="part2" /><text>求助答疑</text>
-							</label><br>
-							<label>
-								<radio value="part3" /><text>求职招聘</text>
-							</label>
-							<label>
-								<radio value="part4" /><text>考研交流</text>
+						<radio-group name="radio" @change="radioChange">
+							<label v-for="(item,index) in items" :key="index">
+								<radio :value=item.part  :checked=item.checked /><text>{{item.name}}</text>
 							</label>
 						</radio-group>
 					</view>
 				</view>
-				
+
 				<!-- 输入框 -->
 				<view class="uni-form-item uni-column" id="postContent">
 					<view class="uni-title uni-common-pl">帖子内容</view>
 					<view class="uni-textarea">
-						<textarea @blur="bindTextAreaBlur" v-model="postContent" maxlength="300"
+						<textarea  v-model="valiFormData.postContent" maxlength="300"
 							placeholder="不超过300字" />
 					</view>
 				</view>
 				<view class="uni-form-item uni-column" id="pictureUpload">
-					<u-upload :fileList="fileList" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+					<u-upload v-model="fileList1" :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
 						:maxCount="3"></u-upload>
 				</view>
 				<view class="uni-btn-v" id="postButton">
-					<button size="mini" class="submitButton" form-type="submit">发布</button>
-					<button size="mini" class="cancelButton" form-type="reset">清空</button>
+					<button size="primary" type="primary" form-type="submit">发布</button>
 				</view>
-			</form>
+			</uni-form>
 		</view>
 	</view>
 </template>
@@ -54,27 +44,86 @@
 	export default {
 		data() {
 			return {
-				postTitle: '',
-				postContent: '',
-				fileList: [{
+				valiFormData: {
+					postTitle: '',
+					postContent: '',
+				},
+				fileList1: [{
 						url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
 					},
 					{
 						url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
 					}
 				],
+				items:[
+					{name:'恋爱交友',part:'1',checked:false},
+					{name:'求助答疑',part:'2',checked:true},
+					{name:'求职招聘',part:'3',checked:false},
+					{name:'瓜田趣事',part:'4',checked:false}
+				],
+				rules: {
+					postTitle: {
+						rules: [{
+							required: true,
+							errorMessage: '标题不能为空'
+						}]
+					},
+					postContent: {
+						rules: [{
+							required: true,
+							errorMessage: '标题不能为空'
+						}]
+					},
+				}
+
 			}
 		},
 		methods: {
-			formSubmit: function(e) {
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
+			//获取分区
+			radioChange: function(evt) {
+					this.part=evt.detail.value
+					console.log(this.part)
+				},
+			//提交数据
+			submit(ref) {
 				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata) + postTitle + postContent,
-					showCancel: true
-				})
-				uni.switchTab({
-					url: "/pages/index/index"
+				this.$refs[ref].validate().then(res => {
+
+					uni.request({
+						url: 'http://localhost:8888/api',
+						method: 'POST',
+						header: {
+							'content-type': "application/x-www-form-urlencoded"
+						},
+						data: {
+							valiFormData: JSON.stringify(this.valiFormData),
+							part: JSON.stringify(this.part)
+						},
+						success: res => {
+							uni.reLaunch({
+								url: "/pages/index/index"
+							})
+						},
+						fail: () => {
+							console.log('err', err)
+							uni.showToast({
+								title: "网络连接错误，请稍后再试！",
+								icon: "error"
+							});
+						},
+						complete: () => {}
+
+					}).catch(err => {
+						wx.showModal({
+							title: `提示`,
+							content: `未填写信息`,
+							showCancel: false
+						});
+						console.log('err', err);
+					})
+					uni.switchTab({
+						url: "/pages/index/index"
+					})
 				})
 			},
 			deletePic(event) {
@@ -103,29 +152,23 @@
 					fileListLen++
 				}
 			},
-			// uploadFilePromise(url) {
-			// 	return new Promise((resolve, reject) => {
-			// 		let a = uni.uploadFile({
-			// 			url: 'http://192.168.2.21:7001/upload', 
-			// 			filePath: url,
-			// 			name: 'file',
-			// 			formData: {
-			// 				user: 'test'
-			// 			},
-			// 			success: (res) => {
-			// 				setTimeout(() => {
-			// 					resolve(res.data.data)
-			// 				}, 1000)
-			// 			}
-			// 		});
-			// 	})
-			// },
-			formReset: function(e) {
-				console.log('清空数据')
+			uploadFilePromise(url) {
+				return new Promise((resolve, reject) => {
+					let a = uni.uploadFile({
+						url: 'http://localhost:8082/upload',
+						filePath: url,
+						name: 'file',
+						formData: {
+							user: 'test'
+						},
+						success: (res) => {
+							setTimeout(() => {
+								resolve(res.data.data)
+							}, 1000)
+						}
+					});
+				})
 			},
-			bindTextAreaBlur: function(e) {
-				console.log(e.detail.value)
-			}
 		}
 	}
 </script>
@@ -187,26 +230,16 @@
 		}
 	}
 
-	#postButton {
-		.submitButton {
-			margin-right: 10px;
-			background-color: cornflowerblue;
-			color: white;
-		}
+	// #postButton {
+	// 	.submitButton {
+	// 		margin-right: 10px;
+	// 		background-color: cornflowerblue;
+	// 		color: white;
+	// 	}
 
-		.submitButton:hover {
-			background-color: blue;
-			font-weight: bold;
-		}
-
-		.cancelButton {
-			background-color: #FF7F50;
-			color: aliceblue;
-		}
-
-		.cancelButton:hover {
-			background-color: #FF0000;
-			font-weight: bold;
-		}
-	}
+	// 	.submitButton:hover {
+	// 		background-color: blue;
+	// 		font-weight: bold;
+	// 	}
+	// }
 </style>

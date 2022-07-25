@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxf0117e6b46fbca61",
         "setting" : {
             "urlCheck" : false
         },
@@ -70,6 +70,31 @@
     },
     "vueVersion" : "2",
     "h5" : {
-        "template" : ""
+        "template" : "",
+        "router" : {
+            "mode" : "hash"
+        },
+        "devServer" : {
+            "port" : 8082,
+            "https" : false,
+            "proxy" : {
+                "/baseUrlTest" : {
+                    "target" : "http://localhost:8888",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/baseUrlTest" : ""
+                    }
+                },
+                "/baseUrlBuild" : {
+                    "target" : "http://zhbz-test.xxx.com",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/baseUrlBuild" : "" //路径重写，将接口路径中以/api开头的部分替换掉
+                    }
+                }
+            }
+        }
     }
 }

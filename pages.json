@@ -21,6 +21,12 @@
 			}
 		},
 		{
+			"path": "pages/components/MainPage",
+			"style": {
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/components/Info/Info",
 			"style": {
 			"navigationBarTitleText": "消息"
@@ -32,6 +38,15 @@
 			"style": {
 			"navigationBarTitleText": "个人中心"
 			}
+		},
+		{
+			"path": "pages/components/MyItem/SettingPage/SettingPage"
+		},
+		{
+			"path": "pages/components/MyItem/identifyPage/identifyPage"
+		},
+		{
+			"path": "pages/components/MyItem/informationPage/informationPage"
 		},
 		{
 			"path": "pages/components/Trade/Trade",
@@ -72,7 +87,7 @@
 		"selectedColor": "#A0522D",
 		"list":[
 			{
-				"text":"首页",
+				"text":"主页",
 				"pagePath":"pages/index/index",
 				"iconPath": "static/tabBar/shouye.svg",
 				"selectedIconPath": "./static/tabBar/shouyefill.svg"

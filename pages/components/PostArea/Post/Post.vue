@@ -1,3 +1,4 @@
+<!-- 帖子详情页 -->
 <template>
 	<view class="main">
 		<view>
@@ -10,7 +11,7 @@
 						</view>
 						<view class="album__content">
 							<u--text text="uView UI" type="primary" bold size="17"></u--text>
-							<u--text margin="10px 0 8px 0" @click="toPost" :text="postTitle"></u--text>
+							<u--text margin="10px 0 8px 0" @click="toPost" :text="postTitle" ></u--text>
 							<u--text margin="0 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
 							<u-album :urls="urls2" multipleSize=80></u-album>
 						</view>
@@ -63,10 +64,13 @@
 
 <script>
 	export default {
+		
+		
 		data() {
 			return {
 				albumWidth: 0,
 				postTitle: '帖子标题',
+				postId:'',
 				popup: {
 					show: false,
 				},
@@ -84,6 +88,22 @@
 				],
 			}
 		},
+		created() {
+			uni.$on("getPostId",postId=>{//获取帖子ID
+				this.postId=postId
+				console.log("帖子ID：",this.postId)
+			})
+		},
+		// beforeMount() {//获取帖子信息
+		// 	getPostById(){
+		// 		uni.request({
+		// 			url:"http://localhost:8888/post",
+		// 			data:{
+		// 				postId:JSON.stringify(this.postId)
+		// 			}
+		// 		})
+		// 	}
+		// },
 		methods: {
 			open() {
 				// console.log('open');
@@ -178,7 +198,5 @@
 				font-weight: bold;
 			}
 		}
-
-
 	}
 </style>
