@@ -11,6 +11,11 @@
 						<u--text margin="10px 0 8px 0" @click="toPost" class="postTitle" :text="postData.postTitle"></u--text>
 						<u--text margin="0 0 8px 0" @click="toPost"  text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
 						<u-album :urls="postData.urls2" multipleSize=50></u-album>
+					<view class="postInfo">
+						<view class="time"><text>发表时间: {{postData.postTime}}</text></view>
+						<view class="support"><u-icon name="thumb-up" :label=postData.supportCount></u-icon></view>
+						<view class="comment"><u-icon name="chat" :label=postData.commentCount></u-icon></view>
+					</view>
 					</view>
 				</view>
 			</view>
@@ -26,6 +31,9 @@
 				postData:{
 					postTitle:'帖子标题',
 					postId:'1',
+					postTime: '2022-7-26 13:24',
+					supportCount: 1,
+					commentCount:0,
 					urls2: [
 						'https://cdn.uviewui.com/uview/album/1.jpg',
 						'https://cdn.uviewui.com/uview/album/2.jpg',
@@ -71,5 +79,21 @@
 			flex: 1;
 		}
 	}
-
+	.postInfo{
+		display: flex;
+		flex-direction: row;
+		margin-top:10px ;
+		font-size: 10px;
+		color:grey;
+		.time{
+			flex: 5;
+			
+		}
+		.support{
+			flex: 1;
+		}
+		.comment{
+			flex: 1;
+		}
+	}
 </style>

@@ -22,7 +22,8 @@
 			<PostCard class="post" />
 			<PostCard class="post" />
 		</view>
-		<view class="divider">	
+			
+		<view class="divider" >	
 			<u-divider text="没有更多内容了"></u-divider>
 		</view>
 		
@@ -55,13 +56,16 @@
 				search: {
 					keyword: '',
 				},
-				
 			}
 		},
 		onLoad() {//加载帖子
 			uni.request({
 				
 			})
+		},
+		onReachBottom() {
+			console.log("页面触底")
+		
 		},
 		methods: {
 			get(e){
@@ -170,5 +174,9 @@
 		position: sticky;
 		bottom: 100px;
 		margin-top: 200px;
+	}
+	
+	.divider{
+		margin-top: 100px;
 	}
 </style>

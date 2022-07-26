@@ -14,7 +14,14 @@
 							<u--text margin="10px 0 8px 0" @click="toPost" :text="postTitle" ></u--text>
 							<u--text margin="0 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
 							<u-album :urls="urls2" multipleSize=80></u-album>
+							
 						</view>
+					</view>
+					<!-- 时间 点赞 评论 -->
+					<view class="postInfo">
+						<view class="time"><text>发表时间: {{postTime}}</text></view>
+						<view class="support"><u-icon :firstClick=firstClick :name=supportIcon @click="support" :label=supportCount></u-icon></view>
+						<view class="comment"><u-icon name='chat' :label=commentCount></u-icon></view>
 					</view>
 				</view>
 			</view>
@@ -37,7 +44,7 @@
 					</view>
 					<view class="answerPopup">
 						<view class="answerText">
-							<u-text @click="popup.show=true" style="text-align: center;" text="回复"></u-text>
+							<u-text @click="popup.show=true" style="text-align: center;" size="10" text="回复"></u-text>
 						</view>
 						<u-popup :show="popup.show" :round="5" @close="close" @open="open" focus=true>
 							<view>
@@ -53,7 +60,7 @@
 		</view>
 		<view class="commentSend">
 			<view class="commentText">
-				<input placeholder="评论..." @click="popup.show=true" ></input>
+				<input placeholder="评论..." disabled=true @click="popup.show=true" ></input>
 			</view>
 			<view class="commentButton">
 				<button class="sendComment" size="mini">点赞</button>
@@ -71,6 +78,11 @@
 				albumWidth: 0,
 				postTitle: '帖子标题',
 				postId:'',
+				postTime: '2022-7-26 13:24',
+				supportCount: 1,
+				supportIcon: 'thumb-up',
+				firstClick:true,
+				commentCount:0,
 				popup: {
 					show: false,
 				},
@@ -94,16 +106,15 @@
 				console.log("帖子ID：",this.postId)
 			})
 		},
-		// beforeMount() {//获取帖子信息
-		// 	getPostById(){
-		// 		uni.request({
-		// 			url:"http://localhost:8888/post",
-		// 			data:{
-		// 				postId:JSON.stringify(this.postId)
-		// 			}
-		// 		})
-		// 	}
-		// },
+		beforeMount() {
+		 		uni.request({
+		 			url:"http://localhost:8888/post",
+		 			data:{
+		 				postId:JSON.stringify(this.postId)
+		 			}
+		 		})
+		 	
+		 },
 		methods: {
 			open() {
 				// console.log('open');
@@ -111,6 +122,14 @@
 			close() {
 				this.popup.show = false
 				// console.log('close');
+			},
+			support(){//点赞
+				if(this.firstClick){
+					this.firstClick=false
+					this.supportIcon='thumb-up-fill'
+					this.supportCount++
+					console.log("点赞成功")
+				}
 			},
 			sendAnswer() {
 				this.popup.show = false
@@ -138,6 +157,23 @@
 		&__content {
 			margin-left: 10px;
 
+			flex: 1;
+		}
+	}
+	.postInfo{
+		display: flex;
+		flex-direction: row;
+		margin-top:20px ;
+		font-size: 10px;
+		color:grey;
+		.time{
+			flex: 5;
+			
+		}
+		.support{
+			flex: 1;
+		}
+		.comment{
 			flex: 1;
 		}
 	}

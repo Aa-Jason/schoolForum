@@ -44,6 +44,10 @@
 			            safeAreaInsetTop:true
 			        })
 		},
+		onReachBottom() {
+			console.log("加载更多内容")
+			alert("000")
+		},
 		methods: {
 
 		}
