@@ -28,14 +28,14 @@
 <style lang="scss" scoped>
 
 	.post-button {
-		width: 50px;
-		height: 50px;
-		border-radius: 25px;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 50rpx;
 		background-color: cornflowerblue;
 
 		img {
-			width: 50px;
-			height: 50px;
+			width: 100rpx;
+			height: 100rpx;
 		}
 	}
 </style>

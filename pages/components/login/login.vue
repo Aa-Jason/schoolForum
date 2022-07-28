@@ -59,39 +59,59 @@
 					})
 					return;
 				}
-				if(this.username=="123" && this.password=="123"){
-					uni.switchTab({					
-						url: "/pages/index/index"
-					})
-					console.log("跳转")
-				}
-				else{
-					alert("账户或密码错误，请重新输入")
-				}
+				// if(this.username=="123" && this.password=="123"){
+				// 	uni.switchTab({					
+				// 		url: "/pages/index/index"
+				// 	})
+				// 	console.log("跳转")
+				// }
+				// else{
+				// 	alert("账户或密码错误，请重新输入")
+				// }
 							
-				this.$myRequest({
+				const res = this.$myRequest({
 					url: '/xboot/auth/login',
 					data:{
 						username:this.username,
 						password:this.password,
-					}
-				}),
-				uni.navigateTo({
+					},
+				})
+				
+				// const res= uni.request({
+				// 	url:'http://localhost:8888/xboot/auth/login',
+				// 	method:"POST",
+				// 	header: {
+				// 		'content-type': "application/x-www-form-urlencoded"
+				// 	},
+				// 	data:{
+				// 		username:JSON.stringify(this.username),
+				// 		password:JSON.stringify(this.password) 
+				// 	},
+				// 	success:(res)=>{
+				// 		if(res.data.status !== 0 && res.data.status !== 200){
+				// 			console.log("响应：",res)
+				// 			return uni.showToast({
+				// 				title: '获取数据失败'
+				// 			})
+							
+				// 		}
+				// 		//抛出结果
+				// 	},
+				// 	fail: (err) => {
+				// 		console.log("错误信息",err)
+				// 		uni.showToast({
+				// 			title: '请求接口失败',
+				// 			icon:"error"
+				// 		})
+				// 	}
+				// })
+				
+				console.log("res",res)
+				uni.switchTab({
 									url:"/pages/index/index"
 								})
 				
-				// uni.showModal({
-				// 	title: '输入完成',
-				// 	content: '是否登录',
-				// 	success: function (res) {
-				// 		console.log(res)
-				// 	if (res.confirm) {
-				// 		console.log('用户点击确定');
-				// 	} else if (res.cancel) {
-				// 		console.log('用户点击取消');
-				// 		}
-				// 	}
-				// })
+				
 			}
 		},
 	}

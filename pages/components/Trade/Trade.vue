@@ -2,16 +2,55 @@
 <template>
 	<view class="trade">
 		<u-sticky offset-top="0">
-			
-		</u-sticky>
+					<view class="tap">
+						<view class="Label">
+							<view class="label-item">
+								<u--image :showLoading="true" src="/static/trade/mobile.png" width="36px" height="36px"
+									@click="click"></u--image>
+								<view class="text-item">
+									<text>手机数码</text>
+								</view>
+							</view>
+							<view class="label-item">
+								<u--image :showLoading="true" src="/static/trade/sports.png" width="36px" height="36px"
+									@click="click"></u--image>
+								<view class="text-item">
+									<text>运动户外</text>
+								</view>
+							</view>
+							<view class="label-item">
+								<u--image :showLoading="true" src="/static/trade/clothes.png" width="36px" height="36px"
+									@click="click"></u--image>
+								<view class="text-item">
+									<text>衣物饰品</text>
+								</view>
+							</view>
+							<view class="label-item">
+								<u--image :showLoading="true" src="/static/trade/life.png" width="36px" height="36px"
+									@click="click"></u--image>
+								<view class="text-item">
+									<text>生活用品</text>
+								</view>
+							</view>
+							<view class="label-item">
+								<u--image :showLoading="true" src="/static/trade/book.png" width="36px" height="36px"
+									@click="click"></u--image>
+								<view class="text-item">
+									<text>文具书籍</text>
+								</view>
+							</view>
+						</view>
+						<u-divider text=""></u-divider>
+					</view>
+				</u-sticky>
 
 		<view class="postArea">
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
 		</view>
 
 		<view class="divider">
@@ -39,7 +78,30 @@
 		},
 		data() {
 			return {
-				
+				postData:{
+					postTitle:'虚空冠军',
+					postId:'1',
+					postContent:'乌兹在哪里，乌兹进场了，乌兹还在输出，乌兹倒下了',
+					postPart:'2',
+					partName:'恋爱交友',
+					postTime: '2022-7-27 13:29',
+					supportCount: 6,
+					commentCount:3,
+					nickname:'简自豪',
+					avatar: '/static/avator.jpg',
+					urls2: [
+						'https://cdn.uviewui.com/uview/album/1.jpg',
+						'https://cdn.uviewui.com/uview/album/2.jpg',
+						'https://cdn.uviewui.com/uview/album/3.jpg',
+						'https://cdn.uviewui.com/uview/album/4.jpg',
+						'https://cdn.uviewui.com/uview/album/5.jpg',
+						'https://cdn.uviewui.com/uview/album/6.jpg',
+						'https://cdn.uviewui.com/uview/album/7.jpg',
+						'https://cdn.uviewui.com/uview/album/8.jpg',
+						'https://cdn.uviewui.com/uview/album/9.jpg',
+						'https://cdn.uviewui.com/uview/album/10.jpg',
+					],
+				}
 					
 			
 			}
@@ -50,34 +112,23 @@
 		},
 
 		methods: {
-			addRandomData() {
-				for (let i = 0; i < 10; i++) {
-					let index = this.$u.random(0, this.list.length - 1);
-					// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
-					let item = JSON.parse(JSON.stringify(this.list[index]))
-					item.id = this.$u.guid();
-					this.flowList.push(item);
-				}
-			},
-			remove(id) {
-				this.$refs.uWaterfall.remove(id);
-			},
-			clear() {
-				this.$refs.uWaterfall.clear();
-			},
-			left() {
-				console.log('left');
-			},
-			right() {
-				console.log('right');
+			getPostData(){//获取帖子数据
+				const res = uni.request({
+					url: '/pages/getPostData?pageindex='+this.pageindex,
+					method:"POST",
+					data:{
+						postData:JSON.stringify(postData)
+					},
+				})
+					this.postData=res.data.message
 			},
 			toPost() { //点击跳转至帖子详情页
 				uni.navigateTo({
 					url: "/pages/components/PostArea/Post/Post"
 				})
 			},
-			click(name) {
-				this.$refs.uToast.success(`点击了第${name}个`)
+			click() {
+				console.log(0)
 			}
 		}
 	}
@@ -88,7 +139,28 @@
 		margin: 5px;
 		padding-bottom: 10px;
 	}
-
+		.tap {
+			background-color: white;
+		}
+	
+		.Label {
+	
+			height: 45px;
+			display: flex;
+			flex-direction: row;
+			margin-top: 10px;
+			font-size: 10px;
+			// font-family: 楷体;
+			margin-left: 20px;
+			.label-item {
+				flex: 1;
+			
+				.text-item {
+					position: relative;
+					left: -5px;
+				}
+			}
+		}
 	.buoy {
 		z-index: 100;
 		border-radius: 25px;

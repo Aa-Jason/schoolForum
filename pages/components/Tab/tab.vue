@@ -2,7 +2,7 @@
 <template>
 	<view class="u-demo-block">
 		<view class="u-demo-block__content">
-			<u-tabs :list="list" lineWidth="30" lineColor="#f56c6c" :activeStyle="{
+			<u-tabs :list="list" lineWidth="30" @click=click lineColor="#f56c6c" :activeStyle="{
 					color: '#303133',
 					fontWeight: 'bold',
 					transform: 'scale(1.05)'
@@ -26,18 +26,23 @@
 				lineBg,
 				list: [{
 					name: '首页',
+					part:1,
 					badge: {
 						isDot: false,
 
 					}
 				}, {
 					name: '恋爱交友',
+					part:2,
 				}, {
-					name: '求助答疑'
+					name: '求助答疑',
+					part:3,
 				}, {
-					name: '求职招聘'
+					name: '求职招聘',
+					part:4,
 				}, {
-					name: '考研交流'
+					name: '瓜田趣事',
+					part:5,
 				}],
 			}
 		},
@@ -46,7 +51,7 @@
 		},
 		methods: {
 			click(item) {
-				console.log('item', item);
+				console.log('分区:', item.part,item.name);
 			}
 		}
 	}

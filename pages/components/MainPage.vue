@@ -15,12 +15,12 @@
 		
 		<!-- 帖子区域 -->
 		<view class="postArea">
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
-			<PostCard class="post" />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
 		</view>
 			
 		<view class="divider" >	
@@ -49,7 +49,27 @@
 		},
 		data() {
 			return {
-				
+				postData:{
+					postTitle:'帖子标题',
+					postId:'1',
+					postContent:'全体起立！从现在开始，这里就是卢本伟广场！',
+					postPart:'3',
+					partName:'求助答疑',
+					postTime: '2022-7-26 13:24',
+					pageindex:1,
+					supportCount: 1,
+					commentCount:0,
+					nickname:'卢本伟',
+					avatar: '/static/avator.jpg',
+					urls2: [
+						'https://cdn.uviewui.com/uview/album/1.jpg',
+						'https://cdn.uviewui.com/uview/album/2.jpg',
+						'https://cdn.uviewui.com/uview/album/3.jpg',
+						'https://cdn.uviewui.com/uview/album/4.jpg',
+						'https://cdn.uviewui.com/uview/album/5.jpg',
+						'https://cdn.uviewui.com/uview/album/6.jpg',
+					],
+				},
 				list:[
 					
 				],
@@ -68,31 +88,15 @@
 		
 		},
 		methods: {
-			get(e){
-				uni.request({
-					url: 'http://localhost:8088/pages/get',
+			getPostData(){//获取帖子数据
+				const res = this.$myRequest({
+					url: '/pages/getPostData?pageindex='+this.pageindex,
 					method:"POST",
 					data:{
-						list
+						postData:JSON.stringify(postData)
 					},
-					header:{
-						'custom-header': 'get'
-					},
-					success: (res) => {
-						console.log("成功")
-						if(res.statusCode==204){
-							// 解构的意义实际上是把res.data.access_token的值拿出来，赋值给一个变量access_token
-							let {access_token} = res.data;
-							uni.setStorageSync('token',access_token);
-						}
-						else{
-							uni.showToast({
-								title: '网络错误，加载失败',
-								icon:'error'
-							});
-						}
-					}
 				})
+					this.postData=res.data
 			},
 			searchByKeyword(e) {
 				console.log("搜索成功")
@@ -167,13 +171,13 @@
 	//发帖悬钮
 	.buoy {
 		z-index: 100;
-		border-radius: 25px;
-		width: 50px;
-		height: 50px;
+		border-radius: 25rpx;
+		width: 100rpx;
+		height: 100rpx;
 		float: right;
 		position: sticky;
-		bottom: 100px;
-		margin-top: 200px;
+		bottom: 200rpx;
+		margin-top: 200rpx;
 	}
 	
 	.divider{
