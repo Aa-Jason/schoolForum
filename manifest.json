@@ -52,7 +52,8 @@
     "mp-weixin" : {
         "appid" : "wxf0117e6b46fbca61",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true
         },
         "usingComponents" : true
     },
@@ -76,6 +77,7 @@
         },
         "devServer" : {
             "port" : 8082,
+			"disableHostCheck" : true,
             "https" : false,
             "proxy" : {
                 "/baseUrlTest" : {

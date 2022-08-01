@@ -1,7 +1,10 @@
 import App from './App'
 import Vue from 'vue'
-import {myRequest} from './utils/api'
+import {myRequest} from 'utils/api'
 // #ifndef VUE3
+
+import {request} from 'common/request.js'
+Vue.prototype.$request = request
 
 Vue.prototype.$myRequest=myRequest
 Vue.config.productionTip = false

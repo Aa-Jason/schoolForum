@@ -3,7 +3,8 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "compression-webpack-plugin": "^10.0.0",
-    "eslint": "^8.20.0"
+    "eslint": "^8.20.0",
+    "uni-card": "^0.0.1"
   },
   "devDependencies": {
     "babel-plugin-component": "^1.1.1",

@@ -26,7 +26,11 @@ export const myRequest=(options)=>{
 					icon:"error"
 				})
 				reject(err)
+			},
+			catch:(e)=>{
+				console.log(e);
 			}
 		})
 	})
 }
+

@@ -2,10 +2,10 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			
+
 			"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
 		}
-		},
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/components/login/login",
@@ -22,24 +22,35 @@
 			}
 		},
 		{
-			"path": "pages/components/MainPage",
-			"style": {
-				"enablePullDownRefresh": true
-			}
-		},
-		{
 			"path": "pages/components/Info/Info",
 			"style": {
-			"navigationBarTitleText": "消息"
+				"navigationBarTitleText": "消息"
 			}
 
 		},
 		{
 			"path": "pages/components/MyItem/MyItem",
 			"style": {
-			"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "个人中心"
 			}
 		},
+		{
+			"path": "pages/components/MyItem/changeUsername/changeUsername",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/components/MyItem/advice/advice",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		},
+
 		{
 			"path": "pages/components/MyItem/SettingPage/SettingPage"
 		},
@@ -52,61 +63,71 @@
 		{
 			"path": "pages/components/Trade/Trade",
 			"style": {
-			"enablePullDownRefresh": true,
-			"navigationBarTitleText": "跳蚤市场"
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "跳蚤市场"
 			}
 		}
 
-        
-        ,{
-            "path" : "pages/components/PostArea/NewPost/NewPost",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "发帖",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/components/PostArea/Post/Post",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "帖子详情",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+
+		, {
+			"path": "pages/components/PostArea/NewPost/NewPost",
+			"style": {
+				"navigationBarTitleText": "发帖",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/components/PostArea/Post/Post",
+			"style": {
+				"navigationBarTitleText": "帖子详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/components/Info/Answer/Answer",
+			"style": {
+				"navigationBarTitleText": "回复",
+				"enablePullDownRefresh": true
+			}
+
+		}, {
+			"path": "pages/components/Info/Support/Support",
+			"style": {
+				"navigationBarTitleText": "收到的赞",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#00C957",
 		"backgroundColor": "#F8F8F8"
-		
+
 	},
-	"tabBar":{
+	"tabBar": {
 		"selectedColor": "#A0522D",
-		"list":[
-			{
-				"text":"主页",
-				"pagePath":"pages/index/index",
+		"list": [{
+				"text": "主页",
+				"pagePath": "pages/index/index",
 				"iconPath": "static/tabBar/shouye.svg",
 				"selectedIconPath": "./static/tabBar/shouyefill.svg"
 			},
 			{
-				"text":"跳蚤市场",
-				"pagePath":"pages/components/Trade/Trade",
+				"text": "跳蚤市场",
+				"pagePath": "pages/components/Trade/Trade",
 				"iconPath": "static/tabBar/ershoushichang.svg"
 			},
 			{
-				"text":"消息",
-				"pagePath":"pages/components/Info/Info",
+				"text": "消息",
+				"pagePath": "pages/components/Info/Info",
 				"iconPath": "./static/tabBar/xiaoxi_1.svg",
 				"selectedIconPath": "./static/tabBar/xiaoxi.svg"
 			},
 			{
-				"text":"我的",
-				"pagePath":"pages/components/MyItem/MyItem",
+				"text": "我的",
+				"pagePath": "pages/components/MyItem/MyItem",
 				"iconPath": "./static/tabBar/gerenzhongxin.svg",
 				"selectedIconPath": "./static/tabBar/gerenzhongxinyonghu01.svg"
 			}
