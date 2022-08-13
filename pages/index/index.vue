@@ -7,7 +7,7 @@
 			<view class="head">
 				<view class="search">
 					<u-search placeholder="请输入要搜索的内容..." v-model="search.keyword" :clearabled="true" bg-color="white"
-						:focus="true" :custom="searchByKeyword()" />
+						:focus="true" :custom="searchByKeyword(search.keyword)" />
 				</view>
 				<view class="tab">
 					<TabTop />
@@ -56,7 +56,7 @@
 				search: {
 					keyword: '',
 				},
-				postData: {
+				postData: [{
 					postTitle: '帖子标题',
 					postId: '1',
 					postContent: '全体起立！从现在开始，这里就是卢本伟广场！',
@@ -75,18 +75,35 @@
 						'https://cdn.uviewui.com/uview/album/4.jpg',
 						'https://cdn.uviewui.com/uview/album/5.jpg',
 						'https://cdn.uviewui.com/uview/album/6.jpg',
-					],
-				},
+					], 
+				},],
 			}
+		},
+		methods: {
+				async searchByKeyword(e) {
+					// const res = await this.$request({
+					// 	url:'',
+					// 	method:'POST',
+					// 	data:{keywords:e}
+					// })
+					// console.log("搜索结果",res.data)
+					console.log("搜索成功",e)
+				},
+				async getNewPost(){
+					const res = await this.$request({
+						url:'',
+						method:'POST',
+						data:{}
+					})
+					console.log("帖子数据",res.data)
+				}
 		},
 		onLoad() {
 
 		},
 		onPullDownRefresh() {
 			console.log("爬取新帖子")
-			uni.request({//加载新帖子
-				
-			})
+
 			uni.stopPullDownRefresh()
 			this.$refs.uNotify.show({
 			            top: 120,
@@ -99,14 +116,12 @@
 		},
 		onReachBottom() {
 			console.log("加载更多内容")
-			alert("000")
+			uni.showToast({
+				title:'加载成功',
+				icon:'success'
+			})
 		},
-		methods: {
-				searchByKeyword(e) {
-					console.log("搜索成功")
-					
-				},
-		}
+		
 	}
 </script>
 

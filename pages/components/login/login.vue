@@ -7,13 +7,13 @@
 				</view>
 				<view class="uni-form-item uni-column">
 					<view>
-						<input class="uni-input" v-model="username" focus placeholder="账号" @input="onUsename" />
+						<input class="uni-input" v-model="username" focus placeholder="账号" />
 					</view>
 				</view>
 				<view class="uni-form-item uni-column">
 					<view>
 						<input class="uni-input" v-model="password" hold-keyboard placeholder="密码" password=true
-							@input="onPwd">
+							>
 					</view>
 				</view>
 				<view class="uni-form-item uni-column">
@@ -30,27 +30,20 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
 		data() {
 			return {
-				"isAuthorization": true,
-				"username": '',
-				"password": '',
-				"userid": '',
+				isAuthorization: true,
+				username: '',
+				password: '',
+				userId: '',
 			};
 		},
 		created() {
 			this.login()
 		},
 		methods: {
-			onUsename: function(event) {
-				// 输入的内容可以由event.target.value来获取
-				this.username = event.target.value
-				console.log(this.username, "输入")
-			},
-			onPwd: function(event) {
-				this.password = event.target.value
-			},
 			async login() {
 				if (this.username == '' || this.password == '') {
 					// uni.showToast 这是给出提示
@@ -96,14 +89,14 @@
 				}
 
 				this.username = res.data[1]
-				this.userid = res.data[2]
-
-				console.log("username:", this.username, " userid:", this.userid)
+				this.userId = res.data[2]
 				
-				
-
+				//将登录用户的id声明为全局变量
+				Vue.prototype.$userId = this.userId
+				console.log("username:", this.username, " userid:", this.userId)
 			}
 		},
+
 	}
 </script>
 

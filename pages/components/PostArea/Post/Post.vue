@@ -11,16 +11,20 @@
 						</view>
 						<view class="album__content">
 							<u--text text="昵称" type="primary" bold size="17"></u--text>
-							<u--text margin="10px 0 8px 0" size=16 bold @click="toPost" :text="postData.postTitle">
+							<u--text margin="10px 0 8px 0" size=16 bold :text="postData.postTitle">
 							</u--text>
 							<u--text margin="0 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
 							<u-album :urls="postData.urls2" multipleSize=150rpx space="3"></u-album>
-
 						</view>
 					</view>
+
+
 					<!-- 时间 点赞 评论 -->
 					<view class="postInfo">
 						<view class="time"><text>{{postData.postTime}}</text></view>
+						<view class="delete"
+							style="text-align:left;flex:1;margin-bottom: 10;color:darkred;font-weight: bold;"
+							v-if="deleteShow" @click="deletePost(postData.userId)">删除</view>
 						<view class="support">
 							<u-icon :firstClick=postData.firstClick :name=postData.supportIcon
 								:label=postData.supportCount :id=postData.postId @click="support()"></u-icon>
@@ -50,17 +54,18 @@
 					</view>
 					<view class="answerPopup">
 						<!-- 评论点赞&回复 -->
-						<view class="commentInfo" style="margin-top:5px ;">
+						<view class="commentInfo" style="margin-top:5px;border-bottom: 1px solid aliceblue;">
 							<view class="time"><text>{{comment.commentTime}}</text></view>
 							<view class="support">
-								<u-icon :firstClick=comment.firstClick :name=comment.supportIcon
-									@click="commentSupport" :label=comment.supportCount :id=comment.commentId>
+								<u-icon :firstClick=comment.firstClick :name=comment.supportIcon @click="commentSupport"
+									:label=comment.supportCount :id=comment.commentId>
 								</u-icon>
 							</view>
 							<view class="comment" @click="popup.show=true">
 								<u-icon name='chat' :label=comment.answerCount></u-icon>
 							</view>
 						</view>
+
 
 						<u-popup :show="popup.show" :round="5" @close="close" @open="open" focus=true>
 							<view>
@@ -70,11 +75,23 @@
 								<u-button type="primary" @click="sendAnswer" text="发送"></u-button>
 							</view>
 						</u-popup>
+						<!-- 评论下方的回复 -->
+						<view class="answer">
+							<view class="album">
+								<view class="album__avatar">
+									<image src="/static/logo.png" mode="" style="width: 20px;height: 20px;"></image>
+								</view>
+								<view class="album__content">
+									<u--text text="uView UI" type="dark" bold size="14"></u--text>
+									<u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
+								</view>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-	
+
 		<!-- 发表评论 -->
 		<view class="commentSend">
 			<view class="commentText">
@@ -94,7 +111,10 @@
 		data() {
 			return {
 				albumWidth: 0,
+				userId: '',
+				deleteShow: true,
 				postData: {
+					userId: 'testid',
 					postTitle: '帖子标题',
 					postId: '',
 					postTime: '2022-7-26 13:24',
@@ -115,16 +135,14 @@
 						'https://cdn.uviewui.com/uview/album/10.jpg',
 					],
 				},
-				commentData:[
-					{
-						commentId: '',
-						commentTime: '2022-7-26 19:34',
-						supportCount: 0,
-						supportIcon: 'thumb-up',
-						firstClick: true,
-						answerCount: 1,
-					},
-				],
+				commentData: [{
+					commentId: '',
+					commentTime: '2022-7-26 19:34',
+					supportCount: 0,
+					supportIcon: 'thumb-up',
+					firstClick: true,
+					answerCount: 1,
+				}, ],
 				popup: {
 					show: false,
 				},
@@ -133,15 +151,18 @@
 		},
 		beforeCreate() {
 			uni.$on("getPostId", postId => { //获取帖子ID
-				this.postId = postId
-				console.log("帖子ID：", this.postId)
+				this.postData.postId = postId
+				console.log("帖子ID：", this.postData.postId)
 			})
 		},
 		created() {
-			this.getPostDataById()
+			// this.getPostDataById()
+			this.userRightsJudge()
+			console.log(111)
 		},
 		mounted() {
-			this.getCommentDataById()
+			// this.getCommentDataById()
+
 		},
 		methods: {
 			open() {
@@ -189,7 +210,7 @@
 				})
 
 			},
-			commentSupport() {//点赞评论
+			commentSupport() { //点赞评论
 				if (this.commentData.firstClick) {
 					this.commentData.firstClick = false
 					this.commentData.supportIcon = 'thumb-up-fill'
@@ -203,6 +224,36 @@
 			},
 			sendAnswer() {
 				this.popup.show = false
+			},
+			userRightsJudge() { //判断用户是否为发帖人,若为发帖人则显示删除按钮
+				this.userId = this.$userId
+				console.log("用户id：", this.userId, "帖子主人id：", this.postData.userId)
+				if (this.userId == this.postData.userId) {
+					this.deleteShow = true
+				} else {
+					this.deleteShow = false
+				}
+			},
+			deletePost(e) { //删除帖子
+				uni.showModal({
+					content: '确认删除？',
+					success: (res) => {
+						if (res.confirm) {
+							this.$request({
+								url: '',
+								data: {
+									postId: this.postData.postId
+								}
+							})
+							console.log("帖子删除成功")
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						} else {
+							console.log("取消删除")
+						}
+					}
+				})
 			}
 		}
 	}
@@ -276,6 +327,11 @@
 			.comment {
 				flex: 1;
 			}
+		}
+
+		.answer {
+			margin-top: 20rpx;
+			margin-left: 10%;
 		}
 	}
 

@@ -35,12 +35,17 @@
 			}
 		},
 		{
+			"path": "pages/components/MyItem/MyPost/MyPost", 
+			"style": {
+				"navigationBarTitleText": "我的帖子"
+			}
+		},
+		{
 			"path": "pages/components/MyItem/changeUsername/changeUsername",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
 		},
 		{
 			"path": "pages/components/MyItem/advice/advice",
@@ -56,7 +61,7 @@
 		},
 		{
 			"path": "pages/components/MyItem/identifyPage/identifyPage"
-		},
+		},            
 		{
 			"path": "pages/components/MyItem/informationPage/informationPage"
 		},
@@ -98,7 +103,7 @@
 			}
 
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "uni-app",
