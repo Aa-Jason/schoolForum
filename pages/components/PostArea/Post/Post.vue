@@ -77,15 +77,26 @@
 						</u-popup>
 						<!-- 评论下方的回复 -->
 						<view class="answer">
-							<view class="album">
-								<view class="album__avatar">
-									<image src="/static/logo.png" mode="" style="width: 20px;height: 20px;"></image>
+							<view>
+								<u--text text="卢本伟" type="dark" bold size="14"></u--text>
+								<view class="answer-text">
+								<span class="content">阿萨德科技是大法官版萨达撒范德萨</span>
 								</view>
-								<view class="album__content">
-									<u--text text="uView UI" type="dark" bold size="14"></u--text>
-									<u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
-								</view>
+								<view class="time"><text>2022年8月14日20:13:28</text></view>
 							</view>
+							<u-divider style="margin-top: 5px;margin-bottom: 5px;" text="*" :dot="true"></u-divider>
+						</view>
+						<view class="answer">
+							<view>
+								<u--text text="卢本伟" type="dark" bold size="14"></u--text>
+								<!-- <u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text> -->
+								<view class="answer-text">回复
+								<span class="name">@简自豪</span>:<span v-html="'\u00a0'"></span>
+								<span class="content">阿萨德科技是大法官版萨达撒范德萨</span>
+								</view>
+								<view class="time"><text>2022年8月14日20:13:28</text></view>
+							</view>
+							<u-divider style="margin-top: 5px;margin-bottom: 5px;" text="*" :dot="true"></u-divider>
 						</view>
 					</view>
 				</view>
@@ -142,6 +153,12 @@
 					supportIcon: 'thumb-up',
 					firstClick: true,
 					answerCount: 1,
+					answerData:[{
+						answerId:'',
+						ownUsername:'',
+						targetUsername:'',
+						
+					}]
 				}, ],
 				popup: {
 					show: false,
@@ -330,9 +347,24 @@
 		}
 
 		.answer {
-			margin-top: 20rpx;
+			margin-top: 10rpx;
 			margin-left: 10%;
+			.answer-text {
+				font-size: 14px;
+				font-family: 微软雅黑;
+				.name{
+					color:cornflowerblue;
+				}
+				
+			}
+			.time {
+				margin-top: 10px;
+				font-size: 10px;
+				color:silver;
+			}
 		}
+
+		
 	}
 
 	.answerPopup {
