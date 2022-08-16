@@ -10,15 +10,13 @@
 							</image>
 						</view>
 						<view class="album__content">
-							<u--text text="昵称" type="primary" bold size="17"></u--text>
+							<u--text text="王二" type="primary" bold size="17"></u--text>
 							<u--text margin="10px 0 8px 0" size=16 bold :text="postData.postTitle">
 							</u--text>
 							<u--text margin="0 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
 							<u-album :urls="postData.urls2" multipleSize=150rpx space="3"></u-album>
 						</view>
 					</view>
-
-
 					<!-- 时间 点赞 评论 -->
 					<view class="postInfo">
 						<view class="time"><text>{{postData.postTime}}</text></view>
@@ -27,7 +25,8 @@
 							v-if="deleteShow" @click="deletePost(postData.userId)">删除</view>
 						<view class="support">
 							<u-icon :firstClick=postData.firstClick :name=postData.supportIcon
-								:label=postData.supportCount :id=postData.postId @click="support()"></u-icon>
+								:label=postData.supportCount :id=postData.postId @click="support(postData.postId)">
+							</u-icon>
 						</view>
 						<view class="comment">
 							<u-icon name='chat' :label=postData.commentCount></u-icon>
@@ -40,70 +39,126 @@
 		<u-divider text="评论"></u-divider>
 
 		<!-- 评论区 -->
-		<view class="commentArea" v-for="(comment,index) in commentData" :key=index>
-			<view class="u-demo-block">
-				<view class="u-demo-block__content">
-					<view class="album">
-						<view class="album__avatar">
-							<image src="/static/logo.png" mode="" style="width: 20px;height: 20px;"></image>
+		<view style="margin-bottom: 200px;">
+			<view class="commentArea" v-for="(comment,index) in commentData" :key="index">
+				<view class="u-demo-block">
+					<view class="u-demo-block__content">
+						<view class="album" @click="comment.popupShow=true">
+							<view class="album__avatar">
+								<image src="/static/logo.png" mode="" style="width: 20px;height: 20px;"></image>
+							</view>
+							<view class="album__content">
+								<u--text text="uView UI" type="dark" bold size="14"></u--text>
+								<u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
+							</view>
 						</view>
-						<view class="album__content">
-							<u--text text="uView UI" type="dark" bold size="14"></u--text>
-							<u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text>
+
+						<!-- 评论的回复框 -->
+						<view class="answerPopup">
+							<u-popup :show="comment.popupShow" :round="5" @close="comment.popupShow=false" @open="open"
+								focus=true>
+								<view>
+									<textarea id="commentTextarea" :placeholder="'回复@'+comment.nickName"
+										maxlength="255"></textarea>
+								</view>
+								<view>
+									<u-button type="primary" @click="sendAnswer(comment.commentId)" text="发送">
+									</u-button>
+								</view>
+							</u-popup>
 						</view>
-					</view>
-					<view class="answerPopup">
+
 						<!-- 评论点赞&回复 -->
 						<view class="commentInfo" style="margin-top:5px;border-bottom: 1px solid aliceblue;">
 							<view class="time"><text>{{comment.commentTime}}</text></view>
 							<view class="support">
-								<u-icon :firstClick=comment.firstClick :name=comment.supportIcon @click="commentSupport"
-									:label=comment.supportCount :id=comment.commentId>
+								<u-icon :firstClick=comment.firstClick :name=comment.supportIcon
+									@click="comment.supportIcon='thumb-up-fill';commentSupport(comment.commentId,comment.firstClick,index)"
+									:label=comment.supportCount>
 								</u-icon>
 							</view>
-							<view class="comment" @click="popup.show=true">
+							<view class="comment">
 								<u-icon name='chat' :label=comment.answerCount></u-icon>
 							</view>
 						</view>
 
+						<!-- 评论的回复 -->
+						<view>
+							<u-read-more v-if="comment.answerCount>0" showHeight="0rpx" :shadowStyle="shadowStyle"
+								color="black" toggle closeText="展开评论">
+								<view class="answer" v-for="dfc in comment.answerDataForComment" :key="dfc.answerId">
+									<view @click="dfc.popupShow=true">
+										<u--text :text=dfc.ownNickName type="dark" bold size="14"></u--text>
+										<view class="answer-text">
+											<span class="content">{{dfc.answerText}}</span>
+										</view>
+										<view class="time"><text>{{dfc.answerTime}}</text></view>
+									</view>
+									<!-- 回复的回复框 -->
+									<view class="answerPopup">
+										<u-popup :show="dfc.popupShow" :round="5" @close="dfc.popupShow=false"
+											@open="open" focus=true>
+											<view>
+												<textarea id="commentTextarea" :placeholder="'回复@'+dfc.ownNickName"
+													maxlength="255"></textarea>
+											</view>
+											<view>
+												<u-button type="primary"
+													@click="sendAnswer(dfc.answerId);dfa.popupShow=false" text="发送">
+												</u-button>
+											</view>
+										</u-popup>
+									</view>
 
-						<u-popup :show="popup.show" :round="5" @close="close" @open="open" focus=true>
-							<view>
-								<textarea id="commentTextarea" placeholder="输入评论,不超过255字" maxlength="255"></textarea>
-							</view>
-							<view>
-								<u-button type="primary" @click="sendAnswer" text="发送"></u-button>
-							</view>
-						</u-popup>
-						<!-- 评论下方的回复 -->
-						<view class="answer">
-							<view>
-								<u--text text="卢本伟" type="dark" bold size="14"></u--text>
-								<view class="answer-text">
-								<span class="content">阿萨德科技是大法官版萨达撒范德萨</span>
 								</view>
-								<view class="time"><text>2022年8月14日20:13:28</text></view>
-							</view>
-							<u-divider style="margin-top: 5px;margin-bottom: 5px;" text="*" :dot="true"></u-divider>
+								<view class="answer" v-for="(dfa,answerId) in comment.answerDataForAnswer"
+									:key=answerId>
+									<view @click="dfa.popupShow=true">
+										<u--text :text=dfa.ownNickName type="dark" bold size="14"></u--text>
+										<view class="answer-text">回复
+											<span class="name">@{{dfa.targetNickName}}</span>:<span
+												v-html="'\u00a0'"></span>
+											<span class="content">{{dfa.answerText}}</span>
+										</view>
+										<view class="time"><text>{{dfa.answerTime}}</text></view>
+									</view>
+									<!-- 回复的回复框 -->
+									<view class="answerPopup">
+										<u-popup :show="dfa.popupShow" :round="5" @close="dfa.popupShow=false"
+											@open="open" focus=true>
+											<view @click="dfa.popupShow=true">
+												<textarea id="commentTextarea" :placeholder="'回复@'+dfa.ownNickName"
+													maxlength="255"></textarea>
+											</view>
+											<view>
+												<u-button type="primary"
+													@click="sendAnswer(dfa.answerId);dfa.popupShow=false" text="发送">
+												</u-button>
+											</view>
+										</u-popup>
+									</view>
+								</view>
+							</u-read-more>
 						</view>
-						<view class="answer">
-							<view>
-								<u--text text="卢本伟" type="dark" bold size="14"></u--text>
-								<!-- <u--text margin="10px 0 8px 0" text="全面的组件和便捷的工具会让您信手拈来，如鱼得水"></u--text> -->
-								<view class="answer-text">回复
-								<span class="name">@简自豪</span>:<span v-html="'\u00a0'"></span>
-								<span class="content">阿萨德科技是大法官版萨达撒范德萨</span>
+						<view class="answerPopup">
+							<!-- 帖子的评论框 -->
+							<u-popup :show="popup.show" :round="5" @close="close" @open="open" focus=true>
+								<view>
+									<textarea id="commentTextarea" :placeholder="'评论帖子@'+postData.nickName"
+										maxlength="255"></textarea>
 								</view>
-								<view class="time"><text>2022年8月14日20:13:28</text></view>
-							</view>
-							<u-divider style="margin-top: 5px;margin-bottom: 5px;" text="*" :dot="true"></u-divider>
+								<view>
+									<u-button type="primary" @click="sendAnswer(postData.postId)" text="发送">
+									</u-button>
+								</view>
+							</u-popup>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
-		<!-- 发表评论 -->
+		<!-- 下方评论框 -->
 		<view class="commentSend">
 			<view class="commentText">
 				<input placeholder="评论..." disabled=true @click="popup.show=true"></input>
@@ -122,12 +177,21 @@
 		data() {
 			return {
 				albumWidth: 0,
-				userId: '',
+				userId: 'testid',
 				deleteShow: true,
-				postData: {
+				popup: {
+					show: false,
+				},
+				shadowStyle: {
+					backgroundImage: "none",
+					paddingTop: "0",
+					marginTop: "10rpx"
+				},
+				postData: { //帖子本体数据
 					userId: 'testid',
+					nickName: '王二',
 					postTitle: '帖子标题',
-					postId: '',
+					postId: '442',
 					postTime: '2022-7-26 13:24',
 					supportCount: 1,
 					supportIcon: 'thumb-up',
@@ -146,23 +210,84 @@
 						'https://cdn.uviewui.com/uview/album/10.jpg',
 					],
 				},
+				//评论区数据
 				commentData: [{
-					commentId: '',
+					commentId: '1121',
 					commentTime: '2022-7-26 19:34',
+					nickName: 'iii',
 					supportCount: 0,
 					supportIcon: 'thumb-up',
 					firstClick: true,
-					answerCount: 1,
-					answerData:[{
-						answerId:'',
-						ownUsername:'',
-						targetUsername:'',
-						
-					}]
+					answerCount: 4,
+					showList: false,
+					popupShow: false,
+					answerDataForComment: [{
+						answerId: '452',
+						ownNickName: '黄巢',
+						answerTime: '2022年8月15日15:20:45',
+						answerText: '待到秋来九月八，我花开后百花杀',
+						popupShow: false,
+					}, {
+						answerId: '1221',
+						ownNickName: '刘路',
+						answerTime: '2022年8月15日15:30:25',
+						answerText: '队长，皇军托我给您带句话',
+						popupShow: false,
+					}, ],
+					answerDataForAnswer: [{
+						answerId: '55254',
+						ownNickName: '李世民',
+						targetNickName: '黄巢',
+						answerTime: '2022年8月15日15:22:31',
+						answerText: '天行有常，不为尧存，不为桀亡',
+						popupShow: false,
+					}, {
+						answerId: '754',
+						ownNickName: '李俨',
+						targetNickName: '李世民',
+						answerTime: '2022年8月15日15:24:29',
+						answerText: '祖宗说得对',
+						popupShow: false,
+					}, ]
+				}, {
+					commentId: '424',
+					commentTime: '2022-7-26 19:34',
+					nickName: 'iii',
+					supportCount: 0,
+					supportIcon: 'thumb-up',
+					firstClick: true,
+					answerCount: 4,
+					showList: false,
+					popupShow: false,
+					answerDataForComment: [{
+						answerId: '75',
+						ownNickName: '黄巢',
+						answerTime: '2022年8月15日15:20:45',
+						answerText: '待到秋来九月八，我花开后百花杀',
+						popupShow: false,
+					}, {
+						answerId: '4534',
+						ownNickName: '刘路',
+						answerTime: '2022年8月15日15:30:25',
+						answerText: '队长，皇军托我给您带句话',
+						popupShow: false,
+					}, ],
+					answerDataForAnswer: [{
+						answerId: '785',
+						ownNickName: '李世民',
+						targetNickName: '黄巢',
+						answerTime: '2022年8月15日15:22:31',
+						answerText: '天行有常，不为尧存，不为桀亡',
+						popupShow: false,
+					}, {
+						answerId: '6543',
+						ownNickName: '李俨',
+						targetNickName: '李世民',
+						answerTime: '2022年8月15日15:24:29',
+						answerText: '祖宗说得对',
+						popupShow: false,
+					}, ]
 				}, ],
-				popup: {
-					show: false,
-				},
 
 			}
 		},
@@ -211,7 +336,7 @@
 				console.log(res.data)
 			},
 
-			support() { //点赞帖子
+			support(id) { //点赞帖子
 				/* 逻辑:
 					获取帖子/评论的id,根据id发送请求去后端查找,将id对应帖子的点赞数+1
 				*/
@@ -223,23 +348,32 @@
 				}
 				this.$request({
 					url: '',
-					data: {}
+					data: {
+						postId: id
+					}
 				})
 
 			},
-			commentSupport() { //点赞评论
-				if (this.commentData.firstClick) {
-					this.commentData.firstClick = false
-					this.commentData.supportIcon = 'thumb-up-fill'
-					this.commentData.supportCount++
+			commentSupport(id, first, index) { //点赞评论
+				if (first) { //只能点赞一次，不可取消
+					this.commentData[index].firstClick = false
+					this.commentData[index].supportCount++;
 					console.log("评论点赞成功")
 				}
 				this.$request({
 					url: '',
-					data: {}
+					data: {
+						commentId: id
+					}
 				})
 			},
-			sendAnswer() {
+			sendAnswer(id) {
+				this.$request({
+					url: '',
+					data: {
+						id: id
+					}
+				})
 				this.popup.show = false
 			},
 			userRightsJudge() { //判断用户是否为发帖人,若为发帖人则显示删除按钮
@@ -271,7 +405,8 @@
 						}
 					}
 				})
-			}
+			},
+
 		}
 	}
 </script>
@@ -322,9 +457,8 @@
 
 	.commentArea {
 		//评论区
-		margin-bottom: 15px;
+		margin-bottom: 0px;
 		padding-bottom: 15px;
-		border-bottom: 1px solid aliceblue;
 
 		.commentInfo {
 			display: flex;
@@ -348,23 +482,27 @@
 
 		.answer {
 			margin-top: 10rpx;
-			margin-left: 10%;
+			margin-left: 32px;
+			border-bottom: 1px solid aliceblue;
+
 			.answer-text {
 				font-size: 14px;
 				font-family: 微软雅黑;
-				.name{
-					color:cornflowerblue;
+
+				.name {
+					color: cornflowerblue;
 				}
-				
+
 			}
+
 			.time {
-				margin-top: 10px;
+				margin-top: 5px;
 				font-size: 10px;
-				color:silver;
+				color: silver;
 			}
 		}
 
-		
+
 	}
 
 	.answerPopup {
@@ -393,14 +531,17 @@
 	.commentSend {
 		//下方评论框
 		position: fixed;
-		bottom: 5px;
+		bottom: 0px;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
+		background-color: white;
 
 		.commentText {
+			margin-bottom: 5px;
 			width: 70%;
 			flex: 14;
+			background-color: white;
 
 			input {
 				width: 100%;
@@ -412,9 +553,11 @@
 
 		.gap {
 			flex: 0.8;
+			margin-bottom: 5px;
 		}
 
 		.commentButton {
+			margin-bottom: 5px;
 			width: 100%;
 			flex: 1.5;
 		}

@@ -88,7 +88,8 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		},
+		{
 			"path": "pages/components/Info/Answer/Answer",
 			"style": {
 				"navigationBarTitleText": "回复",

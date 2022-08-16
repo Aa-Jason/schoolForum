@@ -103,7 +103,6 @@
 		},
 		onPullDownRefresh() {
 			console.log("爬取新帖子")
-
 			uni.stopPullDownRefresh()
 			this.$refs.uNotify.show({
 			            top: 120,

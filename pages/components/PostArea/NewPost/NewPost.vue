@@ -3,34 +3,33 @@
 		<view>
 			<uni-form ref="valiForm" :rules=rules :modeValue="valiFormData">
 				<view class="uni-form-item uni-column" id="postTitle">
-					<view class="title" required>帖子主题</view>
+					<uni-section title="帖子主题" titleFontSize="16px" class="title" type="line">
 					<view class="uni-textarea">
-						<textarea v-model="valiFormData.postTitle" placeholder="不超过30字"
-							maxlength="30" auto-height="true" />
+						<textarea v-model="valiFormData.postTitle" placeholder="不超过30字" maxlength="30"
+							auto-height="true" />
 					</view>
+					</uni-section>
 				</view>
 				<view class="uni-form-item uni-column">
-					<view class="title">分区</view>
-					<view class="part">
-						<radio-group name="radio" @change="radioChange">
-							<label v-for="(item,index) in items" :key="index">
-								<radio :value=item.part  :checked=item.checked /><text>{{item.name}}</text>
-							</label>
-						</radio-group>
+					<uni-section title="分区" titleFontSize="16px" class="title" type="line">
+					<view class="part" style="margin-bottom: 10px;">
+						<uni-data-select placeholder="请选择分区" v-model="value" :localdata="range" @change="change">
+						</uni-data-select>
 					</view>
+					</uni-section>
 				</view>
 
 				<!-- 输入框 -->
 				<view class="uni-form-item uni-column" id="postContent">
-					<view class="uni-title uni-common-pl">帖子内容</view>
+					<uni-section title="帖子内容" titleFontSize="16px" class="title" type="line">
 					<view class="uni-textarea">
-						<textarea  v-model="valiFormData.postContent" maxlength="300"
-							placeholder="不超过300字" />
+						<textarea v-model="valiFormData.postContent" maxlength="300" placeholder="不超过300字" />
 					</view>
+					</uni-section>
 				</view>
 				<view class="uni-form-item uni-column" id="pictureUpload">
-					<u-upload v-model="fileList1" :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
-						:maxCount="3"></u-upload>
+					<u-upload v-model="fileList1" :fileList="fileList1" @afterRead="afterRead" @delete="deletePic"
+						name="1" multiple :maxCount="3"></u-upload>
 				</view>
 				<view class="uni-btn-v" id="postButton">
 					<button size="primary" type="primary" form-type="submit">发布</button>
@@ -44,6 +43,44 @@
 	export default {
 		data() {
 			return {
+				value: 0,
+				range: [{
+						text: '恋爱交友',
+						value: '1'
+					},
+					{
+						text: '求助答疑',
+						value: '2'
+					},
+					{
+						text: '求职招聘',
+						value: '3'
+					},
+					{
+						text: '瓜田趣事',
+						value: '4'
+					},
+					{
+						text: '手机数码',
+						value: '5'
+					},
+					{
+						text: '运动户外',
+						value: '6'
+					},
+					{
+						text: '衣物饰品',
+						value: '7'
+					},
+					{
+						text: '生活用品',
+						value: '8'
+					},
+					{
+						text: '文具书籍',
+						value: '9'
+					},
+				],
 				valiFormData: {
 					postTitle: '',
 					postContent: '',
@@ -54,12 +91,6 @@
 					{
 						url: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
 					}
-				],
-				items:[
-					{name:'恋爱交友',part:'1',checked:false},
-					{name:'求助答疑',part:'2',checked:true},
-					{name:'求职招聘',part:'3',checked:false},
-					{name:'瓜田趣事',part:'4',checked:false}
 				],
 				rules: {
 					postTitle: {
@@ -79,11 +110,10 @@
 			}
 		},
 		methods: {
-			//获取分区
-			radioChange: function(evt) {
-					this.part=evt.detail.value
-					console.log("选中分区：",this.part)
-				},
+			change(e) { //获取分区
+				console.log("e:", e);
+				let part = e;
+			},
 			//提交数据
 			submit(ref) {
 				var formdata = e.detail.value
@@ -97,7 +127,7 @@
 						},
 						data: {
 							valiFormData: JSON.stringify(this.valiFormData),
-							part: JSON.stringify(this.part)
+							part: part
 						},
 						success: res => {
 							uni.reLaunch({
@@ -175,22 +205,17 @@
 
 <style lang="scss" scoped>
 	.main {
-		margin-top: 5px;
 		margin-left: 10px;
 		margin-right: 10px;
 	}
 
-	.uni-form-item .title {
-		padding: 20rpx 0;
-	}
-
 	#postTitle {
 		margin-bottom: 5px;
-
 		.uni-textarea {
+			
 			padding: 5px;
 			border: 1px solid #F5F5F5;
-			border-radius: 3px;
+			border-radius: 4px;
 			height: 45px;
 		}
 
@@ -198,20 +223,11 @@
 			border: 1px solid blueviolet;
 		}
 	}
-
-	.part {
-		padding: 5px;
-		margin-bottom: 5px;
-
-		label {
-			margin-right: 20px;
-		}
-
-		radio {
-			padding-bottom: 10px;
-		}
+	
+	.part:hover{
+		background-color: #F5F5F5;
 	}
-
+	
 	#postContent {
 		margin-bottom: 5px;
 
@@ -221,25 +237,11 @@
 			height: 200px;
 			padding: 5px;
 			border: 1px solid #F5F5F5;
-			border-radius: 10px;
+			border-radius: 4px;
 		}
 
 		.uni-textarea:hover {
-			;
 			border: 1px solid blueviolet;
 		}
 	}
-
-	// #postButton {
-	// 	.submitButton {
-	// 		margin-right: 10px;
-	// 		background-color: cornflowerblue;
-	// 		color: white;
-	// 	}
-
-	// 	.submitButton:hover {
-	// 		background-color: blue;
-	// 		font-weight: bold;
-	// 	}
-	// }
 </style>
