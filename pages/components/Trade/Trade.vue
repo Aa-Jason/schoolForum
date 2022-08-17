@@ -5,35 +5,35 @@
 			<view class="tap">
 				<view class="Label">
 					<view class="label-item">
-						<u--image :showLoading="true" src="/static/trade/mobile.png" width="36px" height="36px"
+						<u--image :showLoading="true" src="/static/trade/运动相机.png" width="36px" height="36px"
 							@click="click"></u--image>
 						<view class="text-item">
 							<text>手机数码</text>
 						</view>
 					</view>
 					<view class="label-item">
-						<u--image :showLoading="true" src="/static/trade/sports.png" width="36px" height="36px"
+						<u--image :showLoading="true" src="/static/trade/运动器具.png" width="36px" height="36px"
 							@click="click"></u--image>
 						<view class="text-item">
 							<text>运动户外</text>
 						</view>
 					</view>
 					<view class="label-item">
-						<u--image :showLoading="true" src="/static/trade/clothes.png" width="36px" height="36px"
+						<u--image :showLoading="true" src="/static/trade/衣物.png" width="36px" height="36px"
 							@click="click"></u--image>
 						<view class="text-item">
 							<text>衣物饰品</text>
 						</view>
 					</view>
 					<view class="label-item">
-						<u--image :showLoading="true" src="/static/trade/life.png" width="36px" height="36px"
+						<u--image :showLoading="true" src="/static/trade/生活用品.png" width="36px" height="36px"
 							@click="click"></u--image>
 						<view class="text-item">
 							<text>生活用品</text>
 						</view>
 					</view>
 					<view class="label-item">
-						<u--image :showLoading="true" src="/static/trade/book.png" width="36px" height="36px"
+						<u--image :showLoading="true" src="/static/trade/图书馆.png" width="36px" height="36px"
 							@click="click"></u--image>
 						<view class="text-item">
 							<text>文具书籍</text>

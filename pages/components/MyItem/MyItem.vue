@@ -14,11 +14,11 @@
 		<view class="cell_back">	
 			<view class="cellsetting">
 				<u-cell-group>
-					<u-cell icon="integral-fill" title="个人信息" value="" size="large" isLink url="./identifyPage/identifyPage"></u-cell>
-					<u-cell icon="integral-fill" title="我的帖子" value="" size="large" isLink url="./MyPost/MyPost"></u-cell>
-					<u-cell icon="setting-fill" title="设置" value="" size="large" isLink url="./SettingPage/SettingPage"></u-cell>
-					<u-cell icon="setting-fill" title="意见反馈" value="" size="large" isLink url="./advice/advice"></u-cell>
-					<u-cell icon="setting-fill" title="关于我们" value="" size="large" isLink url="./informationPage/informationPage"></u-cell>
+					<u-cell icon="/static/myitem/人员_people.png" title="个人信息" value="" size="large" isLink url="./identifyPage/identifyPage"></u-cell>
+					<u-cell icon="/static/myitem/短信-01.png" title="我的帖子" value="" size="large" isLink url="./MyPost/MyPost"></u-cell>
+					<u-cell icon="/static/myitem/设置.png" title="设置" value="" size="large" isLink url="./SettingPage/SettingPage"></u-cell>
+					<u-cell icon="/static/myitem/意见反馈.png" title="意见反馈" value="" size="large" isLink url="./advice/advice"></u-cell>
+					<u-cell icon="/static/myitem/关于我们.png" title="关于我们" value="" size="large" isLink url="./informationPage/informationPage"></u-cell>
 				</u-cell-group>
 			</view>
 		</view>

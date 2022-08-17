@@ -1,73 +1,80 @@
 <template>
 	<view>
-		<view class="">
-			<uni-card title="帖子标题" @click="switchToPost()">
-				<view class="card-actions-time">
-					<text>2022-7-30 16:25</text>
-				</view>
-				<text class="">{{postText}}</text>
-				<view slot="actions" class="card-actions">
-					<view class="card-actions-item">
-						<uni-icons type="heart" size="18" color="#999"></uni-icons>
-						<text class="card-actions-item-text">{{starNum}}</text>
-					</view>
-					<view class="card-actions-item" @click="actionsClick('评论')">
-						<uni-icons type="chatbubble" size="18" color="#999"></uni-icons>
-						<text class="card-actions-item-text">{{commitNum}}</text>
-					</view>
-				</view>
-			</uni-card>
+		<view class="postArea">
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
+			<PostCard class="post" :postData=postData />
 		</view>
 	</view>
 </template>
 
 <script>
+	import PostBuoy from "@/pages/components/PostArea/PostBuoy.vue"
+	import PostCard from "@/pages/components/PostArea/PostCard.vue"
 	export default {
+		name: 'Trade',
+		components: {
+			PostCard,
+			PostBuoy
+		},
+	
 		data() {
 			return {
-					postText:"帖子内容",
-					starNum:"0",
-					commitNum:"0",
+				postData: [{
+					postTitle: '虚空冠军',
+					postId: '265',
+					postContent: '乌兹在哪里，乌兹进场了，乌兹还在输出，乌兹倒下了',
+					postPart: '2',
+					partName: '恋爱交友',
+					postTime: '2022-7-27 13:29',
+					supportCount: 6,
+					commentCount: 3,
+					nickname: '简自豪',
+					avatar: '/static/avator.jpg',
+					urls2: [
+						'https://cdn.uviewui.com/uview/album/1.jpg',
+						'https://cdn.uviewui.com/uview/album/2.jpg',
+						'https://cdn.uviewui.com/uview/album/3.jpg',
+						'https://cdn.uviewui.com/uview/album/4.jpg',
+						'https://cdn.uviewui.com/uview/album/5.jpg',
+						'https://cdn.uviewui.com/uview/album/6.jpg',
+						'https://cdn.uviewui.com/uview/album/7.jpg',
+						'https://cdn.uviewui.com/uview/album/8.jpg',
+						'https://cdn.uviewui.com/uview/album/9.jpg',
+						'https://cdn.uviewui.com/uview/album/10.jpg',
+					],
+				}, ]
 			}
 		},
 		methods: {
-			onClick(e) {
-				console.log(e)
-			},
-			switchToPost(){
-				//测试
-				uni.navigateTo({
-					url:"/pages/components/PostArea/Post/Post"
+			getPostData() { //获取帖子数据
+				const res = uni.$request({
+					url: '/pages/getPostData?pageindex=' + this.pageindex,
+					method: "POST",
+					data: {
+						postData: JSON.stringify(postData)
+					},
 				})
+				this.postData = res.data.message
+			},
+			toPost() { //点击跳转至帖子详情页
+				uni.navigateTo({
+					url: "/pages/components/PostArea/Post/Post"
+				})
+			},
+			click() {
+				console.log(0)
 			}
-		}
+		},
 	}
 </script>
 
 <style lang="scss">
-	.card-actions {
-		display: flex;
-		// flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-		border-top: 1px #eee solid;
-	}
-	
-
-	.card-actions-item{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.card-actions-item{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-
-	.card-actions-item-text {
-		font-size: 12px;
-		color: #666;
-		margin-left: 5px;
+	.post{
+		margin: 5px;
+		padding-bottom: 10px;
 	}
 </style>

@@ -1,28 +1,37 @@
 <template>
 	<view>
-		<view class="text_set">
-			<text>请输入新的昵称：</text>
+		<view class="change_nickname">
+			<text>请输入新昵称：</text>
 		</view>
-
 		<u--input
-		    placeholder="不超过10个字"
-		    border="surround"
-		    clearable
+			placeholder="不超过10个字"
+			border="bottom"
+			clearable
 			maxlength=10
 		  ></u--input>
-		<text>请上传新的头像：</text>
-		<u-upload
-				:fileList="fileList1"
-				@afterRead="afterRead"
-				@delete="deletePic"
-				name="1"
-				multiple
-				:maxCount="10"
-			></u-upload>
+
+		<br>
+		<view class="change_album">
+			<view class="change_album_text">
+				<text>请上传新头像：</text>
+			</view>
+			<view class="change_album_pic">
+				<u-upload
+						:fileList="fileList1"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="1"
+						multiple
+						:maxCount="10"
+					></u-upload>
+			</view>
+		</view>
+		
+			
 		  <u-button
 		  	type="primary"
 		  	text="提交"
-		  	customStyle="margin-top: 20px"
+		  	customStyle="margin-top: -5px"
 		  	@click="submit"
 		  ></u-button>
 	</view>
@@ -97,5 +106,20 @@
 </script>
 
 <style lang="scss">
-
+	.change_nickname{
+		display: flex;
+		float: left;
+		margin: 10px;
+	}
+	.change_album{
+		.change_album_text{
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+		.change_album_pic{
+			margin-left: 18px;
+			margin-top: 10px;
+		}
+	}
+	
 </style>
