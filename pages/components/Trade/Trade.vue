@@ -52,29 +52,34 @@
 			<PostCard class="post" :postData=postData />
 			<PostCard class="post" :postData=postData />
 		</view>
+		<!-- 回到顶部按钮 -->
+		<view class="wrap">
+			<u-back-top :scrollTop="scrollTop" :mode="mode" :iconStyle="iconStyle"></u-back-top>
+		</view>
 
 		<view class="divider">
 			<u-divider text="没有更多内容了"></u-divider>
 		</view>
 
-		<!-- 发帖按钮 -->
-		<view class="buoy">
-			<Post-Buoy />
-		</view>
+
 	</view>
 </template>
 <script>
-	import PostBuoy from "@/pages/components/PostArea/PostBuoy.vue"
 	import PostCard from "@/pages/components/PostArea/PostCard.vue"
 	export default {
 		name: 'Trade',
 		components: {
 			PostCard,
-			PostBuoy
 		},
 
 		data() {
 			return {
+				scrollTop: 0,
+				mode: 'circle',
+				iconStyle: {
+					fontSize: '32rpx',
+					color: '#2979ff'
+				},
 				postData: [{
 					postTitle: '虚空冠军',
 					postId: '265',
@@ -100,6 +105,9 @@
 					],
 				}, ]
 			}
+		},
+		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
 		},
 		methods: {
 			getPostData() { //获取帖子数据

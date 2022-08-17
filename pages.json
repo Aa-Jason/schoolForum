@@ -120,10 +120,17 @@
 				"iconPath": "static/tabBar/shouye.svg",
 				"selectedIconPath": "./static/tabBar/shouyefill.svg"
 			},
+			
 			{
 				"text": "跳蚤市场",
 				"pagePath": "pages/components/Trade/Trade",
-				"iconPath": "static/tabBar/ershoushichang.svg"
+				"iconPath": "static/tabBar/process.svg",
+				"selectedIconPath": "./static/tabBar/process-full.svg"
+			},
+			{
+				
+				"pagePath": "pages/components/PostArea/NewPost/NewPost",
+				"iconPath": "./static/tabBar/jiahao.svg"
 			},
 			{
 				"text": "消息",

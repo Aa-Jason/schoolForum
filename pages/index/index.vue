@@ -23,11 +23,9 @@
 			<PostCard class="post" :postData=postData />
 			<PostCard class="post" :postData=postData />
 		</view>
-		
-		<!-- 发帖按钮 -->
-		<view class="buoy">
-			<Post-Buoy />
-		</view>
+		<view class="wrap">
+				<u-back-top :scrollTop="scrollTop" :mode="mode" :iconStyle="iconStyle"></u-back-top>
+			</view>
 		
 		<view class="divider">
 			<u-divider text="没有更多内容了"></u-divider>
@@ -39,16 +37,20 @@
 
 <script>
 	import PostCard from "@/pages/components/PostArea/PostCard.vue"
-	import PostBuoy from "@/pages/components/PostArea/PostBuoy.vue"
 	import TabTop from "@/pages/components/Tab/tab"
 	export default {
 		components:{
 			PostCard,
-			PostBuoy,
 			TabTop,
 		},
 		data() {
 			return {
+				scrollTop: 0,
+							mode: 'circle',
+							iconStyle: {
+								fontSize: '32rpx',
+								color: '#2979ff'
+							},
 				show:true,
 				list: [
 				
@@ -79,6 +81,9 @@
 				},],
 			}
 		},
+		onPageScroll(e) {
+				this.scrollTop = e.scrollTop;
+			},
 		methods: {
 				async searchByKeyword(e) {
 					// const res = await this.$request({
@@ -87,7 +92,7 @@
 					// 	data:{keywords:e}
 					// })
 					// console.log("搜索结果",res.data)
-					console.log("搜索成功",e)
+					// console.log("搜索成功",e)
 				},
 				async getNewPost(){
 					const res = await this.$request({
@@ -155,19 +160,7 @@
 	.tab {
 		z-index: 100;
 	}
-
 	
-	//发帖悬钮
-	.buoy {
-		z-index: 100;
-		border-radius: 25rpx;
-		width: 100rpx;
-		height: 100rpx;
-		float: right;
-		position: sticky;
-		bottom: 200rpx;
-		margin-top: 200rpx;
-	}
 	.divider {
 		margin-top: 100px;
 	}
