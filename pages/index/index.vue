@@ -58,6 +58,7 @@
 				search: {
 					keyword: '',
 				},
+				pageindex: 1,
 				postData: [{
 					postTitle: '帖子标题',
 					postId: '1',
@@ -65,7 +66,6 @@
 					postPart: '3',
 					partName: '求助答疑',
 					postTime: '2022-7-26 13:24',
-					pageindex: 1,
 					supportCount: 1,
 					commentCount: 0,
 					nickname: '卢本伟',
@@ -94,13 +94,17 @@
 					// console.log("搜索结果",res.data)
 					// console.log("搜索成功",e)
 				},
-				async getNewPost(){
+				async getNewPost(e){
+					let page = this.pageindex
+					this.pageindex=this.pageindex + e
 					const res = await this.$request({
 						url:'',
 						method:'POST',
-						data:{}
+						data:{
+							page:page
+						}
 					})
-					console.log("帖子数据",res.data)
+					console.log("帖子数据",res.data,"页数：",this.pageindex)
 				}
 		},
 		onLoad() {
@@ -108,6 +112,7 @@
 		},
 		onPullDownRefresh() {
 			console.log("爬取新帖子")
+			this.getNewPost(0)
 			uni.stopPullDownRefresh()
 			this.$refs.uNotify.show({
 			            top: 120,
@@ -119,6 +124,7 @@
 			        })
 		},
 		onReachBottom() {
+			this.getNewPost(1)
 			console.log("加载更多内容")
 			uni.showToast({
 				title:'加载成功',

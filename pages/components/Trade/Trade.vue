@@ -43,7 +43,7 @@
 				<u-divider text=""></u-divider>
 			</view>
 		</u-sticky>
-
+		<u-notify ref="uNotify" :show="show"></u-notify>
 		<view class="postArea">
 			<PostCard class="post" :postData=postData />
 			<PostCard class="post" :postData=postData />
@@ -74,6 +74,7 @@
 
 		data() {
 			return {
+				show:true,
 				scrollTop: 0,
 				mode: 'circle',
 				iconStyle: {
@@ -106,6 +107,7 @@
 				}, ]
 			}
 		},
+		
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
 		},
@@ -129,13 +131,25 @@
 				console.log(0)
 			}
 		},
-		onPullDownRefresh() { //放前面
-			console.log("触发下拉刷新")
+		
+		onPullDownRefresh() {
+			console.log("爬取新帖子")
 			uni.stopPullDownRefresh()
+			this.$refs.uNotify.show({
+			            top: 120,
+			            type: 'primary',
+			            message: '刷新成功',
+			            duration: 1000,
+			            fontSize: 10,
+			            safeAreaInsetTop:true
+			        })
 		},
 		onReachBottom() {
-			this.loadStatus = 'loading';
-			// 模拟数据加载
+			console.log("加载更多内容")
+			uni.showToast({
+				title:'加载成功',
+				icon:'success'
+			})
 		},
 	}
 </script>
