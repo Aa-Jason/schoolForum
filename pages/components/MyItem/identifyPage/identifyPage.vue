@@ -26,7 +26,7 @@
 				<u-button type="primary" text="提交" @click=""></u-button>
 			</view>
 		</u-popup>
-		<u-button type="primary" text="修改" @click="show = true"></u-button>
+		<u-button type="primary" text="修改" form-type="submit" @click="show = true"></u-button>
 	</view>
 </template>
 
