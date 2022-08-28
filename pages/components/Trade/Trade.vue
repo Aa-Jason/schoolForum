@@ -104,6 +104,29 @@
 						'https://cdn.uviewui.com/uview/album/9.jpg',
 						'https://cdn.uviewui.com/uview/album/10.jpg',
 					],
+				},{
+					postTitle: '莫道石人一只眼',
+					postId: '26s',
+					postContent: '挑动黄河天下反！',
+					postPart: '2',
+					partName: '运动户外',
+					postTime: '2022-7-27 13:29',
+					supportCount: 6,
+					commentCount: 3,
+					nickname: '黄巢',
+					avatar: '/static/avator.jpg',
+					urls2: [
+						'https://cdn.uviewui.com/uview/album/1.jpg',
+						'https://cdn.uviewui.com/uview/album/2.jpg',
+						'https://cdn.uviewui.com/uview/album/3.jpg',
+						'https://cdn.uviewui.com/uview/album/4.jpg',
+						'https://cdn.uviewui.com/uview/album/5.jpg',
+						'https://cdn.uviewui.com/uview/album/6.jpg',
+						'https://cdn.uviewui.com/uview/album/7.jpg',
+						'https://cdn.uviewui.com/uview/album/8.jpg',
+						'https://cdn.uviewui.com/uview/album/9.jpg',
+						'https://cdn.uviewui.com/uview/album/10.jpg',
+					],
 				}, ]
 			}
 		},
@@ -157,7 +180,6 @@
 <style lang="scss">
 	.post {
 		margin: 5px;
-		padding-bottom: 10px;
 	}
 
 	.tap {

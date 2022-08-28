@@ -52,6 +52,35 @@
 				</u-popup>
 			</uni-card>
 		</view>
+		
+		<view v-for="(Info,index) in answerToAnswer" :key=index>
+			<uni-card :title=Info.answerName :sub-title=subTitle3 :extra=Info.answerTime :thumbnail=Info.answerAvatar
+				@click="onClick" margin="10rpx">
+				<text class="uni-body" style="font-family: '微软雅黑';font-weight: 800;">{{Info.answerText}}</text>
+				<uni-card :is-shadow="false" style="background-color: lightgray;border-radius: 10rpx;" class="post"
+					is-full>
+					<text class="postTitle" style="font-weight: bold;"><span
+							style="color:brown;">{{Info.targetName}}</span>:{{Info.targetText}}</text>
+					<uni-card @click="toPost(Info.postId)" :is-shadow="true" shadow="0px 0px 2px 0px" is-full
+						style="border-radius: 10rpx;">
+						<text class="uni-h6"><span
+								style="color:brown;">{{Info.username}}</span>:{{Info.postTitle}}</text>
+					</uni-card>
+				</uni-card>
+				<view class="answerButton" style="float: right;margin-top: 5px;color:slategray;font-size: 15rpx;">
+					<text @click="openAnswer">回复</text>
+				</view>
+
+				<u-popup :show=answerShow :round="5" @close="close" focus=true>
+					<view>
+						<textarea id="answerTextarea" placeholder="回复:" maxlength="255"></textarea>
+					</view>
+					<view>
+						<u-button type="primary" @click="sendAnswer(Info.answerId)" text="发送"></u-button>
+					</view>
+				</u-popup>
+			</uni-card>
+		</view>
 	</view>
 </template>
 
@@ -87,8 +116,22 @@
 					username: '简自豪',
 					postTime: '',
 				}, ],
+				answerToAnswer: [{
+					answerName: '下路',
+					answerAvatar: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/460d46d0-4fcc-11eb-8ff1-d5dcf8779628.png',
+					answerTime: '2022-8-2 17:30',
+					answerText: '你怎么不来？',
+					answerId: '回复回复',
+					postId: '帖子2',
+					postTitle: '关于我拿了11次冠军这件事，我觉得有必要开个帖子聊聊',
+					targetName: '明凯',
+					targetText: '上路叫我',
+					username: '简自豪',
+					postTime: '',
+				}, ],
 				subTitle1: "评论了你的帖子",
 				subTitle2: "回复了你",
+				subTitle3: "回复了你的评论",
 				extraIcon: {
 					color: '#4cd964',
 					size: '22',

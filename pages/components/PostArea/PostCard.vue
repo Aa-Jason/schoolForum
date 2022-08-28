@@ -88,8 +88,8 @@
 		flex-direction: row;
 		margin-top: 10px;
 		font-size: 10px;
+		padding-bottom:20px ;
 		color: grey;
-
 		.time {
 			flex: 5;
 

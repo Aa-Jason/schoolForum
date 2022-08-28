@@ -64,7 +64,7 @@
 				}
 
 				const res = await this.$request({
-					url: '/user/login', //请求的url默认可以写在配置文件里面
+					url: '/xboot/userInfo/login', 
 					method: 'GET',
 					data: {
 						username: this.username,
@@ -72,8 +72,9 @@
 					}
 				})
 
-				console.log("获取数据:", res)
-				if (res.data[0] == "ok") {
+				console.log("获取数据:", res.data)
+				console.log(res.data.message)
+				if (res.data.message == "success") {
 					uni.showToast({
 						title: '登录成功',
 						icon: "success"
@@ -87,13 +88,10 @@
 						icon: "error"
 					})
 				}
-
-				this.username = res.data[1]
-				this.userId = res.data[2]
-				
+				this.userId = res.data.result[0].id
 				//将登录用户的id声明为全局变量
 				Vue.prototype.$userId = this.userId
-				console.log("username:", this.username, " userid:", this.userId)
+				console.log(" 拿到userid:", this.userId)
 			}
 		},
 
