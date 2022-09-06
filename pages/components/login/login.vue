@@ -12,8 +12,7 @@
 				</view>
 				<view class="uni-form-item uni-column">
 					<view>
-						<input class="uni-input" v-model="password" hold-keyboard placeholder="密码" password=true
-							>
+						<input class="uni-input" v-model="password" hold-keyboard placeholder="密码" password=true>
 					</view>
 				</view>
 				<view class="uni-form-item uni-column">
@@ -37,7 +36,8 @@
 				isAuthorization: true,
 				username: '',
 				password: '',
-				userId: '',
+				userId: 0,
+				nickName: '',
 			};
 		},
 		created() {
@@ -55,16 +55,16 @@
 					})
 					return;
 				}
-				
-				if(this.username=="test" && this.password=="123"){
-					
+
+				if (this.username == "test" && this.password == "123") {
+
 					uni.switchTab({
-										url:"/pages/index/index"
-									})
+						url: "/pages/index/index"
+					})
 				}
 
 				const res = await this.$request({
-					url: '/xboot/userInfo/login', 
+					url: '/xboot/userInfo/login',
 					method: 'GET',
 					data: {
 						username: this.username,
@@ -89,9 +89,11 @@
 					})
 				}
 				this.userId = res.data.result[0].id
-				//将登录用户的id声明为全局变量
+				this.nickName = res.data.result[0].nickName
+				//将登录用户的id和昵称声明为全局变量
 				Vue.prototype.$userId = this.userId
-				console.log(" 拿到userid:", this.userId)
+				Vue.prototype.$nickName = this.nickName
+				console.log(" 拿到userid:", this.userId, "nickName：", this.nickName)
 			}
 		},
 

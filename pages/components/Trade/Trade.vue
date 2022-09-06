@@ -6,35 +6,35 @@
 				<view class="Label">
 					<view class="label-item">
 						<u--image :showLoading="true" src="/static/trade/运动相机.png" width="36px" height="36px"
-							@click="click"></u--image>
+							@click="click(6)"></u--image>
 						<view class="text-item">
 							<text>手机数码</text>
 						</view>
 					</view>
 					<view class="label-item">
 						<u--image :showLoading="true" src="/static/trade/运动器具.png" width="36px" height="36px"
-							@click="click"></u--image>
+							@click="click(7)"></u--image>
 						<view class="text-item">
 							<text>运动户外</text>
 						</view>
 					</view>
 					<view class="label-item">
 						<u--image :showLoading="true" src="/static/trade/衣物.png" width="36px" height="36px"
-							@click="click"></u--image>
+							@click="click(8)"></u--image>
 						<view class="text-item">
 							<text>衣物饰品</text>
 						</view>
 					</view>
 					<view class="label-item">
 						<u--image :showLoading="true" src="/static/trade/生活用品.png" width="36px" height="36px"
-							@click="click"></u--image>
+							@click="click(9)"></u--image>
 						<view class="text-item">
 							<text>生活用品</text>
 						</view>
 					</view>
 					<view class="label-item">
 						<u--image :showLoading="true" src="/static/trade/图书馆.png" width="36px" height="36px"
-							@click="click"></u--image>
+							@click="click(10)"></u--image>
 						<view class="text-item">
 							<text>文具书籍</text>
 						</view>
@@ -46,11 +46,6 @@
 		<u-notify ref="uNotify" :show="show"></u-notify>
 		<view class="postArea">
 			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
 		</view>
 		<!-- 回到顶部按钮 -->
 		<view class="wrap">
@@ -60,7 +55,6 @@
 		<view class="divider">
 			<u-divider text="没有更多内容了"></u-divider>
 		</view>
-
 
 	</view>
 </template>
@@ -74,13 +68,15 @@
 
 		data() {
 			return {
-				show:true,
+				show: true,
 				scrollTop: 0,
 				mode: 'circle',
 				iconStyle: {
 					fontSize: '32rpx',
 					color: '#2979ff'
 				},
+				part: 6,
+				pageindex: 1,
 				postData: [{
 					postTitle: '虚空冠军',
 					postId: '265',
@@ -102,76 +98,80 @@
 						'https://cdn.uviewui.com/uview/album/7.jpg',
 						'https://cdn.uviewui.com/uview/album/8.jpg',
 						'https://cdn.uviewui.com/uview/album/9.jpg',
-						'https://cdn.uviewui.com/uview/album/10.jpg',
 					],
-				},{
-					postTitle: '莫道石人一只眼',
-					postId: '26s',
-					postContent: '挑动黄河天下反！',
-					postPart: '2',
-					partName: '运动户外',
-					postTime: '2022-7-27 13:29',
-					supportCount: 6,
-					commentCount: 3,
-					nickname: '黄巢',
-					avatar: '/static/avator.jpg',
-					urls2: [
-						'https://cdn.uviewui.com/uview/album/1.jpg',
-						'https://cdn.uviewui.com/uview/album/2.jpg',
-						'https://cdn.uviewui.com/uview/album/3.jpg',
-						'https://cdn.uviewui.com/uview/album/4.jpg',
-						'https://cdn.uviewui.com/uview/album/5.jpg',
-						'https://cdn.uviewui.com/uview/album/6.jpg',
-						'https://cdn.uviewui.com/uview/album/7.jpg',
-						'https://cdn.uviewui.com/uview/album/8.jpg',
-						'https://cdn.uviewui.com/uview/album/9.jpg',
-						'https://cdn.uviewui.com/uview/album/10.jpg',
-					],
-				}, ]
+				}]
 			}
 		},
-		
+
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
 		},
 		methods: {
-			getPostData() { //获取帖子数据
-				const res = uni.$request({
-					url: '/pages/getPostData?pageindex=' + this.pageindex,
-					method: "POST",
+			async getNewPost(e) {
+				let page = this.pageindex
+				this.pageindex = this.pageindex + e
+				// console.log("页码:", this.pageindex)
+				await this.$request({
+					url: '/xboot/post/getPostInfo',
+					method: 'POST',
 					data: {
-						postData: JSON.stringify(postData)
-					},
+						page: this.pageindex.toString(),
+						part: this.part.toString()
+					}
+				}).then((res) => {
+					let d = res.data.result
+					var post = {}
+					this.postData = []
+					for (let i = 0; i < res.data.result.length; i++) {
+						post = {
+							postTitle: d[i].postTitle,
+							postId: d[i].id,
+							postContent: d[i].postContent,
+							partName: d[i].postPart,
+							postTime: d[i].createTime,
+							supportCount: d[i].supportCount,
+							commentCount: d[i].commentCount,
+							nickname: d[i].nickName,
+							avatar: d[i].avatar,
+							urls2: [d[i].postPicture]
+						}
+						this.postData.push(post)
+					}
 				})
-				this.postData = res.data.message
 			},
 			toPost() { //点击跳转至帖子详情页
 				uni.navigateTo({
 					url: "/pages/components/PostArea/Post/Post"
 				})
 			},
-			click() {
-				console.log(0)
+			click(e) {
+				this.part = e
+				console.log("分区：", this.part)
+				this.getNewPost(0)
 			}
 		},
-		
+		onLoad() {
+			this.getNewPost(0)
+		},
 		onPullDownRefresh() {
 			console.log("爬取新帖子")
+			this.getNewPost(0)
 			uni.stopPullDownRefresh()
 			this.$refs.uNotify.show({
-			            top: 120,
-			            type: 'primary',
-			            message: '刷新成功',
-			            duration: 1000,
-			            fontSize: 10,
-			            safeAreaInsetTop:true
-			        })
+				top: 120,
+				type: 'primary',
+				message: '刷新成功',
+				duration: 1000,
+				fontSize: 10,
+			 safeAreaInsetTop: true
+			})
 		},
 		onReachBottom() {
 			console.log("加载更多内容")
+			this.getNewPost(1)
 			uni.showToast({
-				title:'加载成功',
-				icon:'success'
+				title: '加载成功',
+				icon: 'success'
 			})
 		},
 	}

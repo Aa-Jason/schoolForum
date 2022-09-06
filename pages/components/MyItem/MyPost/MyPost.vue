@@ -2,27 +2,20 @@
 	<view>
 		<view class="postArea">
 			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
-			<PostCard class="post" :postData=postData />
 		</view>
 	</view>
 </template>
 
 <script>
-	import PostBuoy from "@/pages/components/PostArea/PostBuoy.vue"
 	import PostCard from "@/pages/components/PostArea/PostCard.vue"
 	export default {
 		name: 'Trade',
 		components: {
 			PostCard,
-			PostBuoy
 		},
-	
 		data() {
 			return {
+				userid:0,
 				postData: [{
 					postTitle: '虚空冠军',
 					postId: '265',
@@ -35,30 +28,43 @@
 					nickname: '简自豪',
 					avatar: '/static/avator.jpg',
 					urls2: [
-						'https://cdn.uviewui.com/uview/album/1.jpg',
-						'https://cdn.uviewui.com/uview/album/2.jpg',
-						'https://cdn.uviewui.com/uview/album/3.jpg',
-						'https://cdn.uviewui.com/uview/album/4.jpg',
-						'https://cdn.uviewui.com/uview/album/5.jpg',
-						'https://cdn.uviewui.com/uview/album/6.jpg',
-						'https://cdn.uviewui.com/uview/album/7.jpg',
-						'https://cdn.uviewui.com/uview/album/8.jpg',
-						'https://cdn.uviewui.com/uview/album/9.jpg',
-						'https://cdn.uviewui.com/uview/album/10.jpg',
+
 					],
 				}, ]
 			}
 		},
 		methods: {
-			getPostData() { //获取帖子数据
-				const res = uni.$request({
-					url: '/pages/getPostData?pageindex=' + this.pageindex,
-					method: "POST",
+			async getNewPost() {
+				this.userid=this.$userId
+				await this.$request({
+					url: '/xboot/post/getPostById',
+					method: 'POST',
 					data: {
-						postData: JSON.stringify(postData)
-					},
+						id:this.userid,
+						dif:1
+					}
+				}).then((res) => {
+					console.log("我的帖子:", res)
+					console.log("帖子数量:", res.data.result.length)
+					let d = res.data.result
+					var post = {}
+					this.postData = []
+					for (let i = 0; i < res.data.result.length; i++) {
+						post = {
+							postTitle: d[i].postTitle,
+							postId: d[i].id,
+							postContent: d[i].postContent,
+							partName: d[i].postPart,
+							postTime: d[i].createTime,
+							supportCount: d[i].supportCount,
+							commentCount: d[i].commentCount,
+							nickname: d[i].nickName,
+							avatar: d[i].avatar,
+							urls2: [d[i].postPicture]
+						}
+						this.postData.push(post)
+					}
 				})
-				this.postData = res.data.message
 			},
 			toPost() { //点击跳转至帖子详情页
 				uni.navigateTo({
@@ -69,6 +75,9 @@
 				console.log(0)
 			}
 		},
+		onLoad() {
+			this.getNewPost()
+		}
 	}
 </script>
 

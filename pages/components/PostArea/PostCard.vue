@@ -5,7 +5,7 @@
 				<view class="album">
 					<!-- 头像 -->
 					<view class="album__avatar" style="width: 32px;height: 32px;">
-						<image :src="post.avatar" mode="widthFix" style="width: 32px;height: 32px;"></image>
+						<image :src="post.avatar" style="width: 32px;height: 32px;"></image>
 					</view>
 					<view class="album__content">
 						<!-- 昵称、标题、帖子内容 -->
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	export default {
 		props: ['postData'],
 		data() {
@@ -44,7 +45,8 @@
 		methods: {
 			toPost(postId) { //点击跳转至帖子详情页
 				uni.$emit('getPostId',postId)
-				console.log("跳转成功，帖子ID传入:",postId)
+				Vue.prototype.$postId = parseInt(postId) 
+				console.log("跳转成功，帖子ID传出:",postId)
 				uni.navigateTo({
 					url: "/pages/components/PostArea/Post/Post"
 				})
