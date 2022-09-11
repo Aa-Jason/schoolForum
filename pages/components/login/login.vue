@@ -1,5 +1,6 @@
 <template>
-	<view>
+	<view class="back_img"
+		:style="'background: url(' + 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/img_flower_3.jpg' + '); background-size: cover;background-repeat:no-repeat; background-position: center;'">
 		<view class="login" v-show="isAuthorization">
 			<view class="uni-common-mt">
 				<view class="uni-form-item uni-column">
@@ -19,6 +20,9 @@
 					<view>
 						<button type="primary" @click="login">登录</button>
 					</view>
+				</view>
+				<view class="regist_text" style="color: blue;" @click="register()">
+					<text>没有账号？注册</text>
 				</view>
 			</view>
 		</view>
@@ -94,13 +98,27 @@
 				Vue.prototype.$userId = this.userId
 				Vue.prototype.$nickName = this.nickName
 				console.log(" 拿到userid:", this.userId, "nickName：", this.nickName)
+			},
+			async register() {
+				uni.navigateTo({
+					url: "./regist/regist"
+				})
 			}
 		},
-
 	}
 </script>
 
 <style lang="scss">
+	.back_img {
+		height: 100%;
+		width: 100%;
+		position: fixed;
+		top: 40px;
+		left: 0;
+		transition: all 0.6s ease-in-out;
+		background-color: #333;
+	}
+
 	.login {
 		padding: 20rpx 40rpx;
 		margin: 200rpx 20rpx;

@@ -104,6 +104,15 @@
 			}
 
 		}
+        ,{
+            "path" : "pages/components/login/regist/regist",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

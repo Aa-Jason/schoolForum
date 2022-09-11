@@ -31,9 +31,9 @@
 </template>
 
 <script>
-	import dateUtil from '@/common/date.js'
+	// import dateUtil from '@/common/date.js'
 	import Vue from 'vue'
-	let dateU = new dateUtil.Util1()
+	// let dateU = new dateUtil.Util1()
 	export default {
 		components: {},
 		data() {

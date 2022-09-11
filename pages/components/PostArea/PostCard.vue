@@ -10,7 +10,7 @@
 					<view class="album__content">
 						<!-- 昵称、标题、帖子内容 -->
 						<u--text :text="post.nickname" type="primary" bold size="17"></u--text>
-						<u--text margin="10px 0 8px 0" @click="toPost" bold size=16 class="postTitle"
+						<u--text margin="10px 0 8px 0" @click="toPost(post.postId)" bold size=16 class="postTitle"
 							:text="post.postTitle"></u--text>
 						<u--text margin="0 0 8px 0" @click="toPost(post.postId)" :text="post.postContent"></u--text>
 						<u-album :urls="post.urls2" multipleSize=120rpx space="3"></u-album>

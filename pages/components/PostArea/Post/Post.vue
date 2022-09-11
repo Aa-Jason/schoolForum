@@ -4,6 +4,7 @@
 		<view>
 			<view class="u-demo-block">
 				<view class="u-demo-block__content">
+
 					<view class="album">
 						<view class="album__avatar">
 							<image :src=postData.avatar mode="" style="width: 32px;height: 32px;">
@@ -39,107 +40,114 @@
 		<u-divider text="评论"></u-divider>
 
 		<!-- 评论区 -->
-		<view style="margin-bottom: 200px;">
+		<view :show="CommentShow" style="margin-bottom: 200px;">
 			<view class="commentArea" v-for="(comment,index) in commentData" :key="index">
 				<view class="u-demo-block">
 					<view class="u-demo-block__content">
-						<view class="album" @click="comment.popupShow=true">
-							<view class="album__avatar">
-								<image :src=comment.avatar mode="" style="width: 20px;height: 20px;"></image>
-							</view>
-							<view class="album__content">
-								<u--text :text=comment.nickName type="dark" bold size="14"></u--text>
-								<u--text margin="10px 0 8px 0" :text=comment.content></u--text>
-							</view>
-						</view>
-
-						<!-- 评论的回复框 -->
-						<view class="answerPopup">
-							<u-popup :show="comment.popupShow" :round="5" @close="comment.popupShow=false" @open="open"
-								focus=true>
-								<view>
-									<textarea v-model="commentAnswer" id="commentTextarea"
-										:placeholder="'回复@'+comment.nickName" maxlength="255"></textarea>
+						<view v-if="postData.commentCount>0">
+							<view class="album" @click="comment.popupShow=true">
+								<view class="album__avatar">
+									<image :src=comment.avatar mode="" style="width: 20px;height: 20px;"></image>
 								</view>
-								<view>
-									<u-button type="primary" @click="sendAnswer(comment.commentId,comment.nickName,comment.userid)" text="发送">
-									</u-button>
+								<view class="album__content">
+									<u--text :text=comment.nickName type="dark" bold size="14"></u--text>
+									<u--text margin="10px 0 8px 0" :text=comment.content></u--text>
 								</view>
-							</u-popup>
-						</view>
-
-						<!-- 评论点赞&回复 -->
-						<view class="commentInfo" style="margin-top:5px;border-bottom: 1px solid aliceblue;">
-							<view class="time"><text>{{comment.commentTime}}</text></view>
-							<view class="support">
-								<u-icon :firstClick=comment.firstClick :name=comment.supportIcon
-									@click="comment.supportIcon='thumb-up-fill';commentSupport(comment.commentId,comment.firstClick,index,comment.userid)"
-									:label=comment.supportCount>
-								</u-icon>
 							</view>
-							<view class="comment">
-								<u-icon name='chat' :label=comment.answerCount></u-icon>
-							</view>
-						</view>
 
-						<!-- 评论的回复 -->
-						<view>
-							<u-read-more v-if="comment.answerCount>0" showHeight="0rpx" :shadowStyle="shadowStyle"
-								color="black" toggle closeText="展开评论" @open="getAnswerById(comment.commentId)">
-								<view class="answer" v-for="dfc in comment.answerDataForComment" :key="dfc.answerId">
-									<view @click="dfc.popupShow=true">
-										<u--text :text=dfc.ownNickName type="dark" bold size="14"></u--text>
-										<view class="answer-text">
-											<span class="content">{{dfc.answerText}}</span>
+
+							<!-- 评论的回复框 -->
+							<view class="answerPopup">
+								<u-popup :show="comment.popupShow" :round="5" @close="comment.popupShow=false"
+									@open="open" focus=true>
+									<view>
+										<textarea v-model="commentAnswer" id="commentTextarea"
+											:placeholder="'回复@'+comment.nickName" maxlength="255"></textarea>
+									</view>
+									<view>
+										<u-button type="primary"
+											@click="sendAnswer(comment.commentId,comment.nickName,comment.userid)"
+											text="发送">
+										</u-button>
+									</view>
+								</u-popup>
+							</view>
+
+							<!-- 评论点赞&回复 -->
+							<view class="commentInfo" style="margin-top:5px;border-bottom: 1px solid aliceblue;">
+								<view class="time"><text>{{comment.commentTime}}</text></view>
+								<view class="support">
+									<u-icon :firstClick=comment.firstClick :name=comment.supportIcon
+										@click="comment.supportIcon='thumb-up-fill';commentSupport(comment.commentId,comment.firstClick,index,comment.userid)"
+										:label=comment.supportCount>
+									</u-icon>
+								</view>
+								<view class="comment">
+									<u-icon name='chat' :label=comment.answerCount></u-icon>
+								</view>
+							</view>
+
+							<!-- 评论的回复 -->
+							<view>
+								<u-read-more v-if="comment.answerCount>0" showHeight="0rpx" :shadowStyle="shadowStyle"
+									color="black" toggle closeText="展开评论" @open="getAnswerById(comment.commentId)">
+									<view class="answer" v-for="dfc in comment.answerDataForComment"
+										:key="dfc.answerId">
+										<view @click="dfc.popupShow=true">
+											<u--text :text=dfc.ownNickName type="dark" bold size="14"></u--text>
+											<view class="answer-text">
+												<span class="content">{{dfc.answerText}}</span>
+											</view>
+											<view class="time"><text>{{dfc.answerTime}}</text></view>
 										</view>
-										<view class="time"><text>{{dfc.answerTime}}</text></view>
-									</view>
-									<!-- 回复的回复框 -->
-									<view class="answerPopup">
-										<u-popup :show="dfc.popupShow" :round="5" @close="dfc.popupShow=false"
-											@open="open" focus=true>
-											<view>
-												<textarea v-model="answerContent" id="commentTextarea"
-													:placeholder="'回复@'+dfc.ownNickName" maxlength="255"></textarea>
-											</view>
-											<view>
-												<u-button type="primary"
-													@click="sendAnswer(dfc.answerId,comment.commentId,dfc.ownNickName,dfc.userId);dfa.popupShow=false"
-													text="发送">
-												</u-button>
-											</view>
-										</u-popup>
-									</view>
-
-								</view>
-								<view class="answer" v-for="(dfa,answerId) in comment.answerDataForAnswer"
-									:key=answerId>
-									<view @click="dfa.popupShow=true">
-										<u--text :text=dfa.ownNickName type="dark" bold size="14"></u--text>
-										<view class="answer-text">回复
-											<span class="name">@{{dfa.targetNickName}}</span>:<span
-												v-html="'\u00a0'"></span>
-											<span class="content">{{dfa.answerText}}</span>
+										<!-- 回复的回复框 -->
+										<view class="answerPopup">
+											<u-popup :show="dfc.popupShow" :round="5" @close="dfc.popupShow=false"
+												@open="open" focus=true>
+												<view>
+													<textarea v-model="answerContent" id="commentTextarea"
+														:placeholder="'回复@'+dfc.ownNickName" maxlength="255"></textarea>
+												</view>
+												<view>
+													<u-button type="primary"
+														@click="sendAnswer(dfc.answerId,comment.commentId,dfc.ownNickName,dfc.userId);dfa.popupShow=false"
+														text="发送">
+													</u-button>
+												</view>
+											</u-popup>
 										</view>
-										<view class="time"><text>{{dfa.answerTime}}</text></view>
+
 									</view>
-									<!-- 回复的回复框 -->
-									<view class="answerPopup">
-										<u-popup :show="dfa.popupShow" :round="5" @close="dfa.popupShow=false"
-											@open="open" focus=true>
-											<view @click="dfa.popupShow=true">
-												<textarea id="commentTextarea" :placeholder="'回复@'+dfa.ownNickName"
-													maxlength="255"></textarea>
+									<view class="answer" v-for="(dfa,answerId) in comment.answerDataForAnswer"
+										:key=answerId>
+										<view @click="dfa.popupShow=true">
+											<u--text :text=dfa.ownNickName type="dark" bold size="14"></u--text>
+											<view class="answer-text">回复
+												<span class="name">@{{dfa.targetNickName}}</span>:<span
+													v-html="'\u00a0'"></span>
+												<span class="content">{{dfa.answerText}}</span>
 											</view>
-											<view>
-												<u-button type="primary"
-													@click="sendAnswer(dfa.answerId,comment.commentId,dfa.ownNickName,dfa.userId);dfa.popupShow=false" text="发送">
-												</u-button>
-											</view>
-										</u-popup>
+											<view class="time"><text>{{dfa.answerTime}}</text></view>
+										</view>
+										<!-- 回复的回复框 -->
+										<view class="answerPopup">
+											<u-popup :show="dfa.popupShow" :round="5" @close="dfa.popupShow=false"
+												@open="open" focus=true>
+												<view @click="dfa.popupShow=true">
+													<textarea id="commentTextarea" :placeholder="'回复@'+dfa.ownNickName"
+														maxlength="255"></textarea>
+												</view>
+												<view>
+													<u-button type="primary"
+														@click="sendAnswer(dfa.answerId,comment.commentId,dfa.ownNickName,dfa.userId);dfa.popupShow=false"
+														text="发送">
+													</u-button>
+												</view>
+											</u-popup>
+										</view>
 									</view>
-								</view>
-							</u-read-more>
+								</u-read-more>
+							</view>
 						</view>
 						<view class="answerPopup">
 							<!-- 帖子的评论框 -->
@@ -178,6 +186,7 @@
 		data() {
 			return {
 				albumWidth: 0,
+				CommentShow: false,
 				userId: 0,
 				nickName: '',
 				deleteShow: false,
@@ -263,7 +272,7 @@
 		},
 		methods: {
 			open() {
-				
+
 			},
 			close() {
 				this.popup.show = false
@@ -310,27 +319,38 @@
 					let d = res.data.result
 					var comment = {}
 					this.commentData = []
-					// console.log("评论数量:", res.data.result.length)
-					for (let i = 0; i < res.data.result.length; i += 2) {
+					if (d == 0) {
 						comment = {
-							userid: d[i].commentUserId,
-							commentId: d[i].id,
-							commentTime: d[i].createTime,
-							supportCount: d[i].commentSupportCount,
-							answerCount: d[i].commentAnswerCount,
-							nickName: d[i].nickName,
-							content: d[i].commentContent,
-							avatar: d[i + 1].avatar,
-							urls2: [d[i].postPicture],
-							supportIcon: 'thumb-up',
 							firstClick: true,
 							showList: false,
 							popupShow: false,
-							answerDataForAnswer: [],
-							answerDataForComment: []
 						}
 						this.commentData.push(comment)
+					} else {
+						// console.log("评论数量:", res.data.result.length)
+						for (let i = 0; i < res.data.result.length; i += 2) {
+							comment = {
+								userid: d[i].commentUserId,
+								commentId: d[i].id,
+								commentTime: d[i].createTime,
+								supportCount: d[i].commentSupportCount,
+								answerCount: d[i].commentAnswerCount,
+								nickName: d[i].nickName,
+								content: d[i].commentContent,
+								avatar: d[i + 1].avatar,
+								urls2: [d[i].postPicture],
+								supportIcon: 'thumb-up',
+								firstClick: true,
+								showList: false,
+								popupShow: false,
+								answerDataForAnswer: [],
+								answerDataForComment: []
+							}
+							this.commentData.push(comment)
+						}
 					}
+
+
 					console.log("id:", this.commentData[0].commentId)
 				})
 
@@ -441,7 +461,7 @@
 					}
 				})
 			},
-			async answerComment(id,targetNickName,targetUserId) { //回复评论
+			async answerComment(id, targetNickName, targetUserId) { //回复评论
 				await this.$request({
 					url: '/xboot/answer/sendAnswer',
 					method: 'POST',
@@ -452,15 +472,15 @@
 						nickName: this.nickName,
 						postId: this.postData.postId,
 						targetUserId: targetUserId,
-						targetAnswerId:0,
-						targetNickName:targetNickName
+						targetAnswerId: 0,
+						targetNickName: targetNickName
 					}
 				})
 
 
 			},
 
-			async sendAnswer(id, commentId,targetNickName,targetUserId) { //回复回复
+			async sendAnswer(id, commentId, targetNickName, targetUserId) { //回复回复
 
 				await this.$request({
 					url: '/xboot/answer/sendAnswer',
@@ -473,7 +493,7 @@
 						postId: this.postData.postId,
 						targetUserId: targetUserId,
 						targetAnswerId: id,
-						targetNickName:targetNickName
+						targetNickName: targetNickName
 					}
 				})
 				this.popup.show = false
